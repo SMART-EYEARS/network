@@ -65,10 +65,10 @@ OSI 참조 모델에서 각 계층은
 * 이미지 출처 : https://blog.daum.net/ca-cy/4    
       
 상/하위 계층간의 송수신하는 데이터를 **SDU(Service Data Unit)** 라고 부른다.       
-상위 계층의 데이터를 수신할 때는 **`상위 SDU`** `+` **`PCI(Protocol Control Information`** 이 붙는다.       
+상위 계층의 데이터를 수신할 때는 **`상위 SDU`** `+` **`PCI`** 가 붙는다.       
 또한 계층마다 이러한 **SDU(Service Data Unit)의 이름이 다르다.**         
-      
-**PCI**    
+        
+**PCI(Protocol Control Information)**         
 * 흐름 제어 정보
 * 오류 제어 정보
 * 주소 정보등이 포함 
