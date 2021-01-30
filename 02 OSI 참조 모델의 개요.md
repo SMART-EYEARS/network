@@ -103,4 +103,8 @@ OSI 참조 모델에서 각 계층은
 
 한정으로, 시스템간의 통신에 **중간 노드가 존재**한다.           
    
-# TCP/IP 4 Layer   
+# TCP/IP 4 Layer     
+    
+![102219_1135_TCPIPvsOSIM1](https://user-images.githubusercontent.com/50267433/106348074-b0accb80-6306-11eb-8a53-67e1ae14241d.png)     
+* 이미지 출처 : https://bravenamme.github.io/2020/06/11/osi-model/
+  
