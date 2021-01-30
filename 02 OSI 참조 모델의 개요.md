@@ -109,9 +109,9 @@ TCP/IP는 현재의 인터넷에서 컴퓨터들이 서로 정보를 주고받�
      
 즉, **전체적인 큰 틀의 분류에 맞는 프로토콜의 모음이다.**          
    
-![102219_1135_TCPIPvsOSIM1](https://user-images.githubusercontent.com/50267433/106348074-b0accb80-6306-11eb-8a53-67e1ae14241d.png)     
-* 이미지 출처 : https://bravenamme.github.io/2020/06/11/osi-model/
-
+![213F623C566BAE253B](https://user-images.githubusercontent.com/50267433/106348440-af30d280-6309-11eb-9ad9-017ac8a77ec6.png)    
+* 이미지 출처 : https://hahahoho5915.tistory.com/15    
+    
 |계층|설명|
 |---|----|
 |Application Layer|OSI 7 Layer에서 세션계층 , 프레젠테이션계층, 애플리케이션 계층에 해당한다.<br>응용프로그램들이 네트워크서비스, 메일서비스, 웹서비스 등을 할 수 있도록 표준적 인 인터페이스를 제공한다.|
