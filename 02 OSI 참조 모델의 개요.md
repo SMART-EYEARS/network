@@ -56,5 +56,21 @@ OSI 참조 모델에서 각 계층은
 **`송신측`** `->` **`수신측`**      
 수신측에서 헤더를 이용하여 계층에 따라 작업 처리    
 
+![osi_2](https://user-images.githubusercontent.com/50267433/106346763-a8e82980-62fc-11eb-9e9e-8a9a44742ca4.gif)
+* 이미지 출처 : https://haedallog.tistory.com/79   
 
+같은 계층간의 송수신하는 데이터를 **PDU(Protocol Data Unit)** 라고 부르며,    
    
+![패킷 이름](https://user-images.githubusercontent.com/50267433/106346712-468f2900-62fc-11eb-924f-fadf285f8327.png)    
+* 이미지 출처 : https://blog.daum.net/ca-cy/4    
+      
+상/하위 계층간의 송수신하는 데이터를 **SDU(Service Data Unit)** 라고 부른다.       
+상위 계층의 데이터를 수신할 때는 **`상위 SDU`** `+` **`PCI(Protocol Control Information`** 이 붙는다.       
+또한 계층마다 이러한 **SDU(Service Data Unit)의 이름이 다르다.**         
+      
+**PCI**    
+* 흐름 제어 정보
+* 오류 제어 정보
+* 주소 정보등이 포함 
+
+
