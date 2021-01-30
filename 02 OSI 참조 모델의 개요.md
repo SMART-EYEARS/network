@@ -112,12 +112,12 @@ TCP/IP는 현재의 인터넷에서 컴퓨터들이 서로 정보를 주고받�
 ![102219_1135_TCPIPvsOSIM1](https://user-images.githubusercontent.com/50267433/106348074-b0accb80-6306-11eb-8a53-67e1ae14241d.png)     
 * 이미지 출처 : https://bravenamme.github.io/2020/06/11/osi-model/
 
-||||
-|Internet Layer||
+|계층|설명|
+|---|----|
+|Application Layer|OSI 7 Layer에서 세션계층 , 프레젠테이션계층, 애플리케이션 계층에 해당한다.<br>응용프로그램들이 네트워크서비스, 메일서비스, 웹서비스 등을 할 수 있도록 표준적 인 인터페이스를 제공한다.|
+|Transport Layer|OSI 7 Layer에서 전송계층에 해당한다.<br>네트워크 양단의 송수신 호스트 사이에서 신뢰성 있는 전송기능을 제공한다.<br>시스템의 논리주소(IP 주소)와 포트를 가지고 있어서 각 상위 계층의 프로세스를 연결해서 통신한다.<br>정확한 패킷의 전송을 보장하는 TCP와 정확한 전송을 보장하지 않는 UDP 프로토 콜을 이용한다.<br>데이터의 정확한 전송보다 빠른 속도의 전송이 필요한 멀티미디어 통신에서 UDP 를 사용하면 TCP보다 유용하다.|
+|Internet Layer|OSI 7 Layer의 네트워크 계층에 해당한다.<br>상위 트랜스포트 계층으로부터 받은 데이터에 IP패킷 헤더를 붙여 IP패킷을 만들고 이를 전송하는 것|
 |Network Access Layer|OSI 7 Layer에서 물리계층과 데이터링크 계층에 해당한다.<br>**하드웨어적인 요소와 관련되는 모든 것을 지원하는 계층**|    
-
-
-출처: https://goitgo.tistory.com/25 [Informaion Security]|
 
 
 ## 🤔 그럼 OSI 7 Layer 랑 TCP/IP의 차이는 뭐야?      
