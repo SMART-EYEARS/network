@@ -27,8 +27,11 @@
 **OSI 7 Layer 계층 구조는**    
 `응용`-`표현`-`세션`-`전송`-`네트워크`-`데이터 링크`-`물리` 순으로 나뉘어진다.  
    
-![00 - osi 7 layer](https://user-images.githubusercontent.com/50267433/106346459-bbf9fa00-62fa-11eb-97fd-b9d95b6fa2c4.png)    
-    
+![00 - osi 7 layer](https://user-images.githubusercontent.com/50267433/106346459-bbf9fa00-62fa-11eb-97fd-b9d95b6fa2c4.png)      
+![device](https://user-images.githubusercontent.com/50267433/106347520-6fb2b800-6302-11eb-8f63-83aff752038f.png)   
+  
+      
+      
 <h4> 💡 목적 </h4>         
   
 기본적인 하드웨어나 소프트웨어의 **논리적 변경 없이 시스템간의 통신을 개방하는 것**                   
