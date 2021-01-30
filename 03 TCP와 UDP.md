@@ -168,9 +168,11 @@ TCP 4-Way handshake는 두 시스템(컴퓨터)간에 연결된 세션을 종료
 * 서버 : 클라이언트의 ACK를 받으면 **소켓 연결 CLOSE**          
 * 클라이언트 : 서버로부터 아직 받지 못한 데이터 대비해 일정시간 동안 대기 TIME_OUT         
 
-# UDP
+# 📗 UDP
 
-# TCP와 UDP의 비교
+
+
+# 🤜🤛TCP와 UDP의 비교
 **TCP**   
 `TCP(Transmission Control Protocol, 전송제어 프로토콜)` :   
 * **연결형 전송 프로토콜**로서 신뢰성 과 안정성을 보장해준다.     
