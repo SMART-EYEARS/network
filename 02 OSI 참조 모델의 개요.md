@@ -103,7 +103,7 @@ OSI 참조 모델에서 각 계층은
 
 한정으로, 시스템간의 통신에 **중간 노드가 존재**한다.           
    
-# TCP/IP 4 Layer     
+# 📘 TCP/IP 4 Layer     
 TCP/IP는 현재의 인터넷에서 컴퓨터들이 서로 정보를 주고받는데 쓰이는 통신규약 (프로토콜)의 모음이다.        
 하드웨어, 운영체제, 접속매체에 관계없이 동작할 수 있는 개방성을 가진다.      
      
@@ -111,7 +111,15 @@ TCP/IP는 현재의 인터넷에서 컴퓨터들이 서로 정보를 주고받�
    
 ![102219_1135_TCPIPvsOSIM1](https://user-images.githubusercontent.com/50267433/106348074-b0accb80-6306-11eb-8a53-67e1ae14241d.png)     
 * 이미지 출처 : https://bravenamme.github.io/2020/06/11/osi-model/
-   
+
+||||
+|Internet Layer||
+|Network Access Layer|OSI 7 Layer에서 물리계층과 데이터링크 계층에 해당한다.<br>**하드웨어적인 요소와 관련되는 모든 것을 지원하는 계층**|    
+
+
+출처: https://goitgo.tistory.com/25 [Informaion Security]|
+
+
 ## 🤔 그럼 OSI 7 Layer 랑 TCP/IP의 차이는 뭐야?      
 OSI 7 Layer : **전체적인 네트워크 통신, TCP/IP보다 세분화하여 프로토콜, 역할을 나누고 표준을 정의**            
 TCP/IP : **Only 데이터 통신, 그렇기에 큰 분류에 따른 프로토콜의 모음이라고 말함**             
@@ -123,4 +131,4 @@ TCP/IP : **Only 데이터 통신, 그렇기에 큰 분류에 따른 프로토콜
 |구성|역할 기반 계층 구성|프로토콜의 집합 기반|    
 |기술|통신전반 기술 표준화|데이터 전송기술 특화|      
 |활용|통신 모델 표준 제시|실무적 통신기술 구현|      
-     
+             
