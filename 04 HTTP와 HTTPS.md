@@ -121,8 +121,6 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
 * **Entity headers :**       
     Reqest, Response에서 모두 사용 가능한 Entity(콘텐츠, 본문, 리소스 등)에 대한 설명 부분        
     만약 본문내용이 없는 요청이라면 Entity 헤더는 전송되지 않는다.             
-
-
    
 **🔖 Request Message Body**              
 요청과 관련된 내용(HTML 폼 콘텐츠 등)이 옵션으로 들어가거나, 응답과 관련된 문서(document)가 들어간다.     
@@ -141,8 +139,7 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
    
 ![ResponseMessage.png](./images/ResponseMessage.png)    
   
-**🔖 ResponseMessageHeader**  
-      
+**🔖 ResponseMessageHeader**       
 **ResponseLine**          
 `HTTP Version + Status Code + Status Text`로 구성된다.     
 상태 코드는 성공 및 실패의 여부를 나타내며, 상태 텍스트는 상태 코드에 대한 간결한 설명을 나타낸다.    
@@ -151,19 +148,15 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
 다양한 응답 메타데이터 정보가 들어있으며, 크게 `Response`, `General`, `Entity Header`로 나눌 수 있다.     
      
 ![HTTP_Response_Headers.png](./images/HTTP_Response_Headers.png)        
-  
-General, Entity 헤더는 요청 메세지와 동일하며 Response에는 상태 텍스트와 코드에서 미처 나타내지 못한 서버의 메타데이타 정보를 담고 있습니다.
-주요 항목 소개(Response)
+          
+General, Entity Header는 요청 메세지와 동일하며      
+Response Header에는 **상태 텍스트와 코드에서 미처 나타내지 못한 서버의 메타데이타 정보를 담고 있다.**    
+    
+**🔖 Request Message Body**                  
+모든 응답에 본문이 들어가지는 않는다.           
+길이를 아는 단일-리소스 본문, 길이를 모르는 단일-리소스 본문, 그리고 다중 리소스 본문으로 나눌 수 있다.       
+길이를 모르는 단일-리소스 본문에는 `Transfer-Encoding`가 `chunked`로 설정되어 있으며, 파일은 청크로 나뉘어 인코딩 되어 있습니다.     
 
-Access-Control-Allow-Origin : 응답이 origin으로 부터의 요청 코드와 공유될 수 있는지를 나타냅니다. 만약 프론트엔드와 백엔드 주소가 다르면 CORS 에러 발생
-Set-cookie : 서버에서 사용자 브라우저에 쿠키를 전송하기 위해 사용합니다.
-Last-Modified : 서버가 알고있는 가장 마지막 수정된 날짜와 시각입니다. 저장된 리소스가 이전과 같은지 유효성 검사자로 사용됩니다.
-Location : 리다이렉션될 URL 주소를 명시합니다. 해당 내용은 Statue code가 3.XX(redirect), 201(created)일 때 사용합니다.
-Allow : 요청한 리소스를 지원하는 메소드 집합을 나열합니다. 현 상태에서 어떤 메소드를 사용할 수 있는지를 알 수 있습니다.
-3. 본문(body)
-
-모든 응답에 본문이 들어가진 않습니다. 길이를 아는 단일-리소스 본문, 길이를 모르는 단일-리소스 본문, 그리고 다중 리소스 본문으로 나눌 수 있습니다.
-길이를 모르는 단일-리소스 본문에는 Transfer-Encoding가 chunked로 설정되어 있으며, 파일은 청크로 나뉘어 인코딩 되어 있습니다.
 
 
   
