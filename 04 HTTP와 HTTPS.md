@@ -82,7 +82,7 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 ### 📄 Request Message
 > 참고 좋은 동영상 : [생활코딩 RequestMessage](https://opentutorials.org/course/3385/21674)    
    
-![HTTP_Request_Headers.png](./images/HTTP_Request_Headers.png)
+![RequestMessage.png](./images/RequestMessage.png)
 
 
 
