@@ -151,12 +151,12 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
           
 General, Entity Header는 요청 메세지와 동일하며      
 Response Header에는 **상태 텍스트와 코드에서 미처 나타내지 못한 서버의 메타데이타 정보를 담고 있다.**    
-    
-**🔖 Request Message Body**                  
-모든 응답에 본문이 들어가지는 않는다.           
-길이를 아는 단일-리소스 본문, 길이를 모르는 단일-리소스 본문, 그리고 다중 리소스 본문으로 나눌 수 있다.       
-길이를 모르는 단일-리소스 본문에는 `Transfer-Encoding`가 `chunked`로 설정되어 있으며, 파일은 청크로 나뉘어 인코딩 되어 있습니다.     
-
+      
+**🔖 Request Message Body**                     
+모든 응답에 본문이 들어가지는 않는다.             
+길이를 아는 단일-리소스 본문, 길이를 모르는 단일-리소스 본문, 그리고 다중 리소스 본문으로 나눌 수 있다.          
+길이를 모르는 단일-리소스 본문에는 `Transfer-Encoding`가 `chunked`로 설정되어 있으며, 파일은 청크로 나뉘어 인코딩 되어 있다.       
+   
 
 
   
