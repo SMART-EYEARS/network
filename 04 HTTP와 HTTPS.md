@@ -87,18 +87,19 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 **RequestMessageHeader**  
 `RequestMessageHeader == RequestLine + RequestHeader`  
 HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.      
-* **RequestLine**     
+
+**RequestLine**        
 Request Start Line은 HTTP Method와 Request Target, 프로토콜 버전으로 구성되어있다.
-    * **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
+* **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
     
-* **RequestHeader**   
+**RequestHeader**   
 Header는 Start Line에서 표현되지 않은 더 구체적인 요구를 작성하는 공간이다.   
-    * Host : 서버의 도메인 주소 (DNS)  
-    * Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
-    * Accept-Language : 서버가 돌려주기로 예상된 언어
-    * Accept-Encoding : 브라우저가 처리할 수 있는 컨텐츠 인코딩 압축 방식
-    * Content-Length : 메세지의 본문 크기를 byte단위로 표시
-    * User-Agent : 사용자의 웹 브라우저 종류&버전 정보   
+* Host : 서버의 도메인 주소 (DNS)  
+* Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
+* Accept-Language : 서버가 돌려주기로 예상된 언어
+* Accept-Encoding : 브라우저가 처리할 수 있는 컨텐츠 인코딩 압축 방식
+* Content-Length : 메세지의 본문 크기를 byte단위로 표시
+* User-Agent : 사용자의 웹 브라우저 종류&버전 정보   
   
 위 내용들은 아직, 외울 필요없다. 나중에 구글링을 통해 검색하면 된다.    
 보다 자세한 내용은 [MDN Web Docs-HTTP 헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers)
