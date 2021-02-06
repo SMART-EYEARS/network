@@ -84,7 +84,7 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
    
 ![RequestMessage.png](./images/RequestMessage.png)
 
-**RequestMessageHeader**  
+**🔖RequestMessageHeader**  
 `RequestMessageHeader == RequestLine + RequestHeader`  
 HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.      
 
@@ -104,7 +104,7 @@ Header는 Start Line에서 표현되지 않은 더 구체적인 요구를 작성
 위 내용들은 아직, 외울 필요없다. 나중에 구글링을 통해 검색하면 된다.    
 보다 자세한 내용은 [MDN Web Docs-HTTP 헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers)
 
-**Request Message Body**     
+**🔖 Request Message Body**     
 
 Header와 Body 사이에는 한 줄의 공백이 있다.         
 
