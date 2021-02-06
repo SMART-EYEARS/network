@@ -320,8 +320,8 @@ ___
 웹 기반의 REST에서는 `HTTP Method`와 `Header`를 활용합니다.          
    
 ```
-GET http://localhost:8080/resource/1     
-content-type: application/json    // 헤더 : application/json 으로 요청   
+GET http://localhost:8080/resource/1     // RequestMessageHeader -> requestLine의 HTTP Method  
+content-type: application/json      
 ```   
 예를 들어 GET 메서드를 활용하여 `/resource/1`의 정보를 받아온다는 것을 표현했습니다.     
     
