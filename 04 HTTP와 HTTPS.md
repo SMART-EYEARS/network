@@ -76,11 +76,13 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 주의점 : 파일이 아닙니다. 데이터를 요청 응답하는 것입니다.    
 ``` 
    
+이전에 배웠던 관련 내용_TCP 를 이용한 HTTP 통신 : [TCP 3-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-3-way-handshake), [TCP 4-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-4-way-handshake)   
+
 ## 📖 Request Message & Response Message    
 ![RequestAndResponseMessage](./images/RequestAndResponseMessage.png)     
 
 ### 📄 Request Message
-> 참고 좋은 동영상 : [생활코딩 RequestMessage](https://opentutorials.org/course/3385/21674)    
+> 참고하기 좋은 동영상 : [생활코딩 RequestMessage](https://opentutorials.org/course/3385/21674)    
    
 ![RequestMessage.png](./images/RequestMessage.png)
 
@@ -89,11 +91,12 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.      
 
 **RequestLine**        
-Request Start Line은 HTTP Method와 Request Target, 프로토콜 버전으로 구성되어있다.
+해당 요청 또는 응답에 대한 성공 또는 실패를 기록하며 항상 한줄로 끝난다.        
 * **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
     
 **RequestHeader**   
-Header는 Start Line에서 표현되지 않은 더 구체적인 요구를 작성하는 공간이다.   
+해당 요청 또는 응답에 대한 메타데이터가 들어가며,        
+요청에 대한 설명, 혹은 메시지 본문에 대한 설명이 들어간다.          
 * Host : 서버의 도메인 주소 (DNS)  
 * Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
 * Accept-Language : 서버가 돌려주기로 예상된 언어
@@ -109,21 +112,23 @@ Header는 Start Line에서 표현되지 않은 더 구체적인 요구를 작성
 `GET`, `HEAD`, `DELETE` , `OPTIONS`처럼 **리소스를 가져오는 요청은 보통 본문이 필요가 없다.**   
 쉽게 설명하면, 데이터를 전송하려면 body 이용, 가져오려면 header 에 존재하는 url에 쿼리 이용         
 `RequestMessageHeader`와 `RequesetMeessageBody` 사이에는 한 줄의 공백이 있다.                 
-
-
-
-
-
-
-
-
-### 📄 Response Message  
-
    
-이전에 배웠던 관련 내용_TCP 를 이용한 HTTP 통신 : [TCP 3-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-3-way-handshake), [TCP 4-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-4-way-handshake)   
-  
-### 코드로 알아보기   
+**정리**      
+* **`HTTP Head` = `start-line` + `HTTP Headers`**
+* **`HTTP Body` = `payload (실질적으로 전송의 목적이 되는 데이터 부분)**
 
+### 📄 Response Message   
+> 참고하기 좋은 동영상 : [생활코딩 ResponseMessage](https://opentutorials.org/course/3385/21675)    
+   
+![ResponseMessage.png](./images/ResponseMessage.png)    
+  
+
+
+
+  
+# 참고 
+[sdc337dc님의 블로그](https://velog.io/@sdc337dc/%EC%9B%B9-%EA%B0%9C%EB%85%90-Http-%ED%86%B5%EC%8B%A0)       
+[ss-won님의 블로그](https://velog.io/@ss-won/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-HTTP-Message%EC%99%80-Status-Code)     
 
 
 
