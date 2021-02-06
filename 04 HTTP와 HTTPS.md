@@ -158,16 +158,29 @@ Response Header에는 **상태 텍스트와 코드에서 미처 나타내지 못
 길이를 모르는 단일-리소스 본문에는 `Transfer-Encoding`가 `chunked`로 설정되어 있으며, 파일은 청크로 나뉘어 인코딩 되어 있다.       
    
 ## 📖 HTTP 1.0 과 HTTP 1.1 그리고 HTTP 2.0의 차이        
-HTTP는 기본적으로 MIME 형태로 이루어지며 request/response의 방식에 기반을 두고 있다.          
-  
-### 📄 HTTP 1.0 의 문제점
-HTTP 1.0은 단순하게 `open/operation/close`의 방식을 취하고 있어서 **단순하다.**      
-`TCP connection`당 하나의 URL만 fetch하며 **매번의 `request/response`가 끝나면 연결이 끊긴다.**          
-그러므로 **매 번 필요할 때 마다 다시 연결을 해야 하므로 속도가 떨어진다.**             
-또한, 한번에 얻어서 가져올 수 있는 **데이터의 양이 제한**되어 있다. 나아가 **URL의 크기도 작다.**    
-          
+HTTP는 기본적으로 MIME 형태로 이루어지며 request/response의 방식에 기반을 두고 있다.            
+HTTP는 원래 0.9v 부터 시작되었다고 하지만, 사실상 1.0버전이 상용화 되어 1996년부터 사용되기 시작했다.    
+     
+### 📄 HTTP 1.0 과 문제점
+* HTTP 1.0은 단순하게 `open/operation/close`의 방식을 취하고 있어서 **단순하다.**      
+* `TCP connection`당 하나의 URL만 fetch하며 **매번의 `request/response`가 끝나면 연결이 끊긴다.**          
+* 그러므로 **매 번 필요할 때 마다 다시 연결을 해야 하므로 속도가 떨어진다.**             
+* 또한, 한번에 얻어서 가져올 수 있는 **데이터의 양이 제한**되어 있다. 나아가 **URL의 크기도 작다.**       
+             
 즉, **매번 Conncetion/Close 작업을 해야하며 전송할 데이터량이 작다, URL 크기도 작다.**     
 
+HTTP 1.0에서는 `open/close`를 위한 `flow`의 제한으로 대역폭이 적게 할당되어 연결되는데,    
+이로 인해 [congestion information](https://ko.wikipedia.org/wiki/%ED%98%BC%EC%9E%A1_%EC%A0%9C%EC%96%B4)이 자주 발생하고 `disconnect`가 반복적으로 나타나게 된다.   
+반복되는 `disconnect`현상으로 인해 **한 서버에 계속해서 접속을 시도하게 되면 과부하가 걸리고 성능이 떨어지게 되는 문제가 발생한다.**    
+이런 문제를 해결하기 위해 `HTTP 1.1`이 등장한 것이다.   
+
+### 📄 HTTP 1.1 과 문제점
+HTTP의 인터넷에서 impact를 줄이고 **cache**를 두어 인터넷 프로토콜 수행이 빠르게 될 수 있도록 성능을 향상하고 있다.
+`multiple request`에 대한 처리가 가능하고 `request/response`가 파이프라인 방식으로 진행이 가능하다.    
+
+
+
+### 
 
   
 # 참고 
