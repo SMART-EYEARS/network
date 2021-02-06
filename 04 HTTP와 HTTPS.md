@@ -76,8 +76,7 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 주의점 : 파일이 아닙니다. 데이터를 요청 응답하는 것입니다.    
 ``` 
    
-
-## ✨📖 Request Message & Response Message ✨    
+## 📖 Request Message & Response Message ✨    
 ![RequestAndResponseMessage](./images/RequestAndResponseMessage.png)     
 
 **🔖 RequsetMessage**
