@@ -76,11 +76,19 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 주의점 : 파일이 아닙니다. 데이터를 요청 응답하는 것입니다.    
 ``` 
    
-## 📖 Request Message & Response Message ✨    
+## 📖 Request Message & Response Message    
 ![RequestAndResponseMessage](./images/RequestAndResponseMessage.png)     
 
-**🔖 RequsetMessage**
+### 📄 Request Message
+> 참고 좋은 동영상 : [생활코딩 RequestMessage](https://opentutorials.org/course/3385/21674)    
+   
 ![HTTP_Request_Headers.png](./images/HTTP_Request_Headers.png)
+
+
+
+
+
+### 📄 Response Message  
 
    
 이전에 배웠던 관련 내용_TCP 를 이용한 HTTP 통신 : [TCP 3-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-3-way-handshake), [TCP 4-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-4-way-handshake)   
