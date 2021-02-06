@@ -88,24 +88,8 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
    
 ![RequestMessage.png](./images/RequestMessage.png)
 
-**🔖 RequestMessageHeader**  
-`RequestMessageHeader == RequestLine + RequestHeader`  
-HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.      
+<br>
 
-**RequestLine**        
-해당 요청 또는 응답에 대한 성공 또는 실패를 기록하며 항상 한줄로 끝난다.        
-* **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
-    
-**RequestHeader**   
-다양한 요청 메타데이터 정보가 들어있으며, 크게 Request, General, Entity Header로 나눌 수 있다.    
-   
-![HTTP_Request_Headers.png](./images/HTTP_Request_Headers.png)       
-  
-**General headers :** 요청 및 응답 메시지 모두에서 사용 가능한 일반 목적의 헤더 항목
-**Request headers :** Request Message에서만 나타납니다. 요청을 구체화 시키거나, context 제공, 또는 제약사항 등이 기재된다.
-**Entity headers :** Reqest, Response에서 모두 사용 가능한 Entity(콘텐츠, 본문, 리소스 등)에 대한 설명 부분 
-만약 본문내용이 없는 요청이라면 Entity 헤더는 전송되지 않는다.        
-      
 * Host : 서버의 도메인 주소 (DNS)  
 * Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
 * Accept-Language : 서버가 돌려주기로 예상된 언어
@@ -115,6 +99,30 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
   
 위 내용들은 아직, 외울 필요없다. 나중에 구글링을 통해 검색하면 된다.    
 보다 자세한 내용은 [MDN Web Docs-HTTP 헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers)
+
+**🔖 RequestMessageHeader**  
+`RequestMessageHeader == RequestLine + RequestHeader`  
+HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.      
+
+**RequestLine**        
+해당 요청 또는 응답에 대한 성공 또는 실패를 기록하며 항상 한줄로 끝난다.        
+* **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
+    
+**RequestHeader**   
+다양한 요청 메타데이터 정보가 들어있으며, 크게 Request, General, Entity Header로 나눌 수 있다.     
+      
+![HTTP_Request_Headers.png](./images/HTTP_Request_Headers.png)          
+       
+* **General headers :**    
+    요청 및 응답 메시지 모두에서 사용 가능한 일반 목적의 헤더 항목          
+* **Request headers :**      
+    Request Message에서만 나타난다.            
+    요청을 구체화 시키거나, context 제공, 또는 제약사항 등이 기재된다.        
+* **Entity headers :**       
+    Reqest, Response에서 모두 사용 가능한 Entity(콘텐츠, 본문, 리소스 등)에 대한 설명 부분        
+    만약 본문내용이 없는 요청이라면 Entity 헤더는 전송되지 않는다.             
+
+
    
 **🔖 Request Message Body**              
 요청과 관련된 내용(HTML 폼 콘텐츠 등)이 옵션으로 들어가거나, 응답과 관련된 문서(document)가 들어간다.     
