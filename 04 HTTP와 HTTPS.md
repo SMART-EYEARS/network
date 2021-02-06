@@ -79,6 +79,8 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 이전에 배웠던 관련 내용_TCP 를 이용한 HTTP 통신 : [TCP 3-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-3-way-handshake), [TCP 4-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-4-way-handshake)   
    
 ## 📖 HTTP Message(Request Message & Response Message)       
+> 정말 잘 정리해주신 분이 계셔서 공유 : [ss-won](https://velog.io/@ss-won/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-HTTP-Message%EC%99%80-Status-Code)    
+        
 ![RequestAndResponseMessage](./images/RequestAndResponseMessage.png)     
 
 ### 📄 Request Message
@@ -95,8 +97,15 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
 * **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
     
 **RequestHeader**   
-해당 요청 또는 응답에 대한 메타데이터가 들어가며,        
-요청에 대한 설명, 혹은 메시지 본문에 대한 설명이 들어간다.          
+다양한 요청 메타데이터 정보가 들어있으며, 크게 Request, General, Entity Header로 나눌 수 있다.    
+   
+![HTTP_Request_Headers.png](./images/HTTP_Request_Headers.png)       
+  
+**General headers :** 요청 및 응답 메시지 모두에서 사용 가능한 일반 목적의 헤더 항목
+**Request headers :** Request Message에서만 나타납니다. 요청을 구체화 시키거나, context 제공, 또는 제약사항 등이 기재된다.
+**Entity headers :** Reqest, Response에서 모두 사용 가능한 Entity(콘텐츠, 본문, 리소스 등)에 대한 설명 부분 
+만약 본문내용이 없는 요청이라면 Entity 헤더는 전송되지 않는다.        
+      
 * Host : 서버의 도메인 주소 (DNS)  
 * Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
 * Accept-Language : 서버가 돌려주기로 예상된 언어
@@ -124,7 +133,26 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
    
 ![ResponseMessage.png](./images/ResponseMessage.png)    
   
+**🔖 ResponseMessageHeader**  
+      
+**ResponseLine**          
+`HTTP Version + Status Code + Status Text`로 구성된다.     
+상태 코드는 성공 및 실패의 여부를 나타내며, 상태 텍스트는 상태 코드에 대한 간결한 설명을 나타낸다.    
+   
+**ReponseHeader**   
+다양한 응답 메타데이터 정보가 들어있으며, 크게 `Response`, `General`, `Entity Header`로 나눌 수 있다.     
 
+General, Entity 헤더는 요청 메세지와 동일하며 Response에는 상태 텍스트와 코드에서 미처 나타내지 못한 서버의 메타데이타 정보를 담고 있습니다.
+주요 항목 소개(Response)
+Access-Control-Allow-Origin : 응답이 origin으로 부터의 요청 코드와 공유될 수 있는지를 나타냅니다. 만약 프론트엔드와 백엔드 주소가 다르면 CORS 에러 발생
+Set-cookie : 서버에서 사용자 브라우저에 쿠키를 전송하기 위해 사용합니다.
+Last-Modified : 서버가 알고있는 가장 마지막 수정된 날짜와 시각입니다. 저장된 리소스가 이전과 같은지 유효성 검사자로 사용됩니다.
+Location : 리다이렉션될 URL 주소를 명시합니다. 해당 내용은 Statue code가 3.XX(redirect), 201(created)일 때 사용합니다.
+Allow : 요청한 리소스를 지원하는 메소드 집합을 나열합니다. 현 상태에서 어떤 메소드를 사용할 수 있는지를 알 수 있습니다.
+3. 본문(body)
+
+모든 응답에 본문이 들어가진 않습니다. 길이를 아는 단일-리소스 본문, 길이를 모르는 단일-리소스 본문, 그리고 다중 리소스 본문으로 나눌 수 있습니다.
+길이를 모르는 단일-리소스 본문에는 Transfer-Encoding가 chunked로 설정되어 있으며, 파일은 청크로 나뉘어 인코딩 되어 있습니다.
 
 
   
