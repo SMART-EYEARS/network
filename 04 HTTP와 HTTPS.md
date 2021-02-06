@@ -115,9 +115,7 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
 쉽게 설명하면, 데이터를 전송하려면 body 이용, 가져오려면 header 에 존재하는 url에 쿼리 이용           
 `RequestMessageHeader`와 `RequesetMeessageBody` 사이에는 한 줄의 공백이 있다.                     
   
-  
-   
-**정리**      
+**📌 정리**      
 * **`HTTP Head` = `start-line` + `HTTP Headers`**
 * **`HTTP Body` = `payload (실질적으로 전송의 목적이 되는 데이터 부분)**
 
