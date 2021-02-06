@@ -26,11 +26,11 @@ API URL는 어떻게 설계할까?, POST? PUT? HTTP 상태코드는 어떤걸 �
   
 # 📘 HTTP       
 > Hypertext Transfer Protocol 의 약자로, 인터넷상에서 노드간에 데이터 통신을 위한 기초적인 프로토콜         
-       
-* Application 계층의 프로토콜 
-* 인터넷상에서 `HyperText`를 교환하기 위해 사용되기 시작했다.  
-* 기본적으로 80번 포트를 사용, WAS 같은 경우 8080을 사용한다.   
-* 
+          
+* Application 계층의 프로토콜     
+* 인터넷상에서 `HyperText`를 교환하기 위해 사용되기 시작했다.    
+* 기본적으로 80번 포트를 사용, WAS 같은 경우 8080을 사용한다.     
+* **평문으로 데이터가 전송 된다. - 보안에 안 좋음**        
          
 `HyperText`는 다른 파일에 대한 참조 링크인 **하이퍼링크**를 가지고 있으며,              
 하이퍼링크를 통해 다른 문서로 이동하거나,        
@@ -59,22 +59,32 @@ SpringCloud는 Netflix OpenSource 를 기반으로 스프링에서 동작하게�
      
 SpringWebFlux는 Spring MVC 와 정반대 구조로 EventLoop로 인해 동작한다.   
        
-## 📖 HTTP 통신 - Request & Response    
+## 📖 HTTP 통신 - Request & Response      
 
-
-
+![RequestAndResponse.png](./images/RequestAndResponse.png)    
+         
+Clinet & Server 구조에서 주로 이용되며             
+클라이언트는 요청(Request)를 보내고 서버는 응답(Response)로 응답해주는 구조이다.              
+     
+웹 서버는 모두 HTTP 데몬을 가지고 있는데,        
+HTTP 데몬은 HTTP 요청을 기다리고 있다가 요청이 들어오면 요청을 처리하도록 설계되어 있다.       
+    
+HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하나의 클라이언트이다.            
+사용자가 URL을 입력하거나, 하이퍼텍스트 링크를 클릭 함으로써 데이터를 요구하면, 브라우저는 HTTP 요구를 URL에 적혀있는 IP 주소에 전달한다.            
+지정된 서버상의 HTTP 데몬은 그 요구(Request)를 받아서, 필요한 작업이 있다면 처리를 한 뒤에 요구된 데이터를 찾아서 응답한다.             
+  
+**주의점 : 파일이 아닙니다. 데이터를 요청 응답하는 것입니다.**    
+   
+   
+이전에 배웠던 관련된 내용   
 TCP 를 이용한 HTTP 통신 : [TCP 3-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-3-way-handshake), [TCP 4-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-4-way-handshake)   
+  
+### 코드로 알아보기   
 
 
 
 
 
-
-
-웹 서버는 모두 HTTP 데몬을 가지고 있는데, 이 프로그램은 HTTP 요청을 기다리고 있다가 요청이 들어오면 그것을 처리하도록 설계되어 있다.   
-HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하나의 클라이언트이다.       
-사용자가 URL을 입력하거나, 하이퍼텍스트 링크를 클릭 함으로써 파일을 요구하면, 브라우저는 HTTP 요구를 URL에 적혀있는 IP 주소에 전달한다.       
-지정된 서버상의 HTTP 데몬은 그 요구를 받아서, 필요한 작업이 혹 있다면 처리를 한 뒤에 요구된 파일을 찾아서 보내준다.    
 
 
 
