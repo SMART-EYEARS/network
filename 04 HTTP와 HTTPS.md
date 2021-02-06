@@ -59,7 +59,7 @@ SpringCloud는 Netflix OpenSource 를 기반으로 스프링에서 동작하게�
      
 SpringWebFlux는 Spring MVC 와 정반대 구조로 EventLoop로 인해 동작한다.   
        
-## 📖 HTTP 통신 - Request & response    
+## 📖 HTTP 통신 - Request & Response    
 
 
 
