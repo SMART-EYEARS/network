@@ -29,6 +29,8 @@ API URL는 어떻게 설계할까?, POST? PUT? HTTP 상태코드는 어떤걸 �
        
 * Application 계층의 프로토콜 
 * 인터넷상에서 `HyperText`를 교환하기 위해 사용되기 시작했다.  
+* 기본적으로 80번 포트를 사용, WAS 같은 경우 8080을 사용한다.   
+* 
          
 `HyperText`는 다른 파일에 대한 참조 링크인 **하이퍼링크**를 가지고 있으며,              
 하이퍼링크를 통해 다른 문서로 이동하거나,        
@@ -43,10 +45,28 @@ API URL는 어떻게 설계할까?, POST? PUT? HTTP 상태코드는 어떤걸 �
 연결된 정보가 주로 문자 정보로 되어 있으면 하이퍼텍스트이고,      
 음악, 영상, 애니메이션 또는 다른 요소가 포함되어 있으면 하이퍼미디어가 된다.    
 ```
-      
-✔ 백엔드 개발자 같은 경우 HTML보다는 JSON과 XML을 통해 데이터를 통신하는데 주로 사용한다.             
-            
+          
+✔ 백엔드 개발자 같은 경우 HTML보다는 JSON과 XML을 통해 데이터를 통신하는데 주로 사용한다.                  
+과거에는 TCP와 매우 밀접했지만, 현 트렌드가 비동기, 논블록킹으로 전환되면서 UDP와도 관계가 깊어졌다.                 
+     
+🤔 비동기와 UDP가 같은 의미인지 좀 헷갈리는데 이부분은 잡아주시면 감사하겠습니다.   
+   
+현재 대부분의 회사에서 모놀리식 아키텍처에서 MSA로 전환이 되고 있는데       
+가장 대표적으로 사용하고 있는 기술이 바로, SpringCloud이다.       
+SpringCloud는 Netflix OpenSource 를 기반으로 스프링에서 동작하게끔 만들어주고 있다.       
+여기서 가장 중요한 것은 Spring API GateWay란 것이 SpringBoot 2.4버전에 등장했는데,       
+기본적인 조건이 Java 비동기 통신인 Netty와 SpringWebFlux를 이용해야 한다는 것이다.           
+     
+SpringWebFlux는 Spring MVC 와 정반대 구조로 EventLoop로 인해 동작한다.   
+       
 ## 📖 HTTP 통신 - Request & response    
+
+
+
+TCP 를 이용한 HTTP 통신 : [TCP 3-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-3-way-handshake), [TCP 4-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-4-way-handshake)   
+
+
+
 
 
 
