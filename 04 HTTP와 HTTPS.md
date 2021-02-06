@@ -77,7 +77,7 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 ``` 
    
 
-### 📄 Request Message & Response Message     
+### ✨📄 Request Message & Response Message ✨    
 ![RequestAndResponseMessage](./images/RequestAndResponseMessage.png)     
 
    
