@@ -346,7 +346,7 @@ URI는 resource 까지 포함하므로 더 명확하게 예측이 가능합니�
 * 키 값이 변하지 않는 한 URI가 변경되더라도 동적으로 사용할 수 있습니다.         
 따라서 서버쪽 코드가 변하더라도 클라이언트 코드를 따로 수정할 필요가 없습니다.      
 
-
+[예시](https://velog.io/@jayjay28/HATEOAS)    
   
 # 참고 
 [sdc337dc님의 블로그](https://velog.io/@sdc337dc/%EC%9B%B9-%EA%B0%9C%EB%85%90-Http-%ED%86%B5%EC%8B%A0)       
