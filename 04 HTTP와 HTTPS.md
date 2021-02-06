@@ -107,11 +107,15 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
 위 내용들은 아직, 외울 필요없다. 나중에 구글링을 통해 검색하면 된다.    
 보다 자세한 내용은 [MDN Web Docs-HTTP 헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers)
    
-**🔖 Request Message Body**            
-`POST` 요청의 경우 **업데이트를 하기 위해 서버에 데이터를 전송한다.**                 
-`GET`, `HEAD`, `DELETE` , `OPTIONS`처럼 **리소스를 가져오는 요청은 보통 본문이 필요가 없다.**   
-쉽게 설명하면, 데이터를 전송하려면 body 이용, 가져오려면 header 에 존재하는 url에 쿼리 이용         
-`RequestMessageHeader`와 `RequesetMeessageBody` 사이에는 한 줄의 공백이 있다.                 
+**🔖 Request Message Body**              
+요청과 관련된 내용(HTML 폼 콘텐츠 등)이 옵션으로 들어가거나, 응답과 관련된 문서(document)가 들어간다.     
+본문의 존재 유무 및 크기는 첫 줄과 Requestheader에 명시된다.         
+`POST` 요청의 경우 **업데이트를 하기 위해 서버에 데이터를 전송한다.**                   
+`GET`, `HEAD`, `DELETE` , `OPTIONS`처럼 **리소스를 가져오는 요청은 보통 본문이 필요가 없다.**       
+쉽게 설명하면, 데이터를 전송하려면 body 이용, 가져오려면 header 에 존재하는 url에 쿼리 이용           
+`RequestMessageHeader`와 `RequesetMeessageBody` 사이에는 한 줄의 공백이 있다.                     
+  
+  
    
 **정리**      
 * **`HTTP Head` = `start-line` + `HTTP Headers`**
