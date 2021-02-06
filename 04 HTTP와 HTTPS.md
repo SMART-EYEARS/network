@@ -84,25 +84,23 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
    
 ![RequestMessage.png](./images/RequestMessage.png)
 
-**RequestLine**  
-* **`[HTTP Method](#http-method)`+ `CurrentUrl` + `HttpVersion`**   
+**RequestMessageHeader**
+* RequestMessageHeader == RequestLine + RequestHeader
+* **RequestLine**  
+    * **`[HTTP Method](#http-method)`+ `CurrentUrl` + `HttpVersion`**   
     
-**RequestHeader**   
-* Host : 서버의 도메인 주소 (DNS)  
-* Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
-* Accept-Charset : 브라우저가 처리할 수 있는 문자 인코딩 방법
-* Accept-Language : 사용하는 언어
-* Accept-Encoding : 브라우저가 처리할 수 있는 컨텐츠 압축 방식
-* Content-Length : 메세지의 본문 크기를 byte단위로 표시
-* Content-Type : 컨텐츠의 타입과 문자열 인코딩 등을 명시
-* Content-Language : 사용하는 언어
-* Content-Encoding : 컨텐츠 압축 방식
-* Referer : 이전 페이지의 주소
-* Cookie : 쿠키 정보
-* Connection : Keep-alive가 디폴트이며, HTTP/2에선 아예 사라진 헤더. 큰 의미가 없다.
-* User-Agent : 사용자의 웹 브라우저 종류&버전 정보
-
+* **RequestHeader**   
+    * Host : 서버의 도메인 주소 (DNS)  
+    * Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
+    * Accept-Language : 서버가 돌려주기로 예상된 언어
+    * Accept-Encoding : 브라우저가 처리할 수 있는 컨텐츠 인코딩 압축 방식
+    * Content-Length : 메세지의 본문 크기를 byte단위로 표시
+    * User-Agent : 사용자의 웹 브라우저 종류&버전 정보
+    
+위 내용들은 아직, 외울 필요없다. 나중에 구글링을 통해 검색하면 된다.    
 보다 자세한 내용은 [MDN Web Docs-HTTP 헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers)
+
+
 
 **RequestHeader**   
 
