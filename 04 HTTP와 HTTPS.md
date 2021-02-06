@@ -194,7 +194,7 @@ HTTP의 인터넷에서 impact를 줄이고 **cache**를 두어 인터넷 프로
    
 ### 📄 HTTP 2의 등장    
  
-![HTTPMultiPlexing.png](HTTPMultiPlexing.png)
+![HTTPMultiPlexing.png](./images/HTTPMultiPlexing.png)
   
 앞서 말했듯이, `HTTP_1.1`에는 `Request`에 문제가 있으면 응답이 늦어지는 **`Head Of Line Blocking`이 발생한다.**    
 HTTP 2에서는 이를 해결한 `MultiPlexing` 이라는 개념이 도입되었다.       
