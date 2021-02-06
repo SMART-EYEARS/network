@@ -84,8 +84,9 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
    
 ![RequestMessage.png](./images/RequestMessage.png)
 
-**RequestMessageHeader**
-* RequestMessageHeader == RequestLine + RequestHeader
+**RequestMessageHeader**  
+`RequestMessageHeader == RequestLine + RequestHeader`  
+HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.      
 * **RequestLine**     
 Request Start Line은 HTTP Method와 Request Target, 프로토콜 버전으로 구성되어있다.
     * **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
@@ -97,13 +98,20 @@ Header는 Start Line에서 표현되지 않은 더 구체적인 요구를 작성
     * Accept-Language : 서버가 돌려주기로 예상된 언어
     * Accept-Encoding : 브라우저가 처리할 수 있는 컨텐츠 인코딩 압축 방식
     * Content-Length : 메세지의 본문 크기를 byte단위로 표시
-    * User-Agent : 사용자의 웹 브라우저 종류&버전 정보
-    
+    * User-Agent : 사용자의 웹 브라우저 종류&버전 정보   
+  
 위 내용들은 아직, 외울 필요없다. 나중에 구글링을 통해 검색하면 된다.    
 보다 자세한 내용은 [MDN Web Docs-HTTP 헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers)
 
+**Request Message Body**     
 
-**Body**   
+Header와 Body 사이에는 한 줄의 공백이 있다.         
+
+
+
+**GET VS POST**      
+POST 요청은 클라이언트에서 서버로 전송할 때 추가적인 데이터를 body에 포함할 수 있다.   
+GET 요청은 모든 필요한 데이터를 URL에 포함하여 요청한다.   
 
 
 
