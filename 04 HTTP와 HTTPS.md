@@ -199,9 +199,14 @@ HTTP의 인터넷에서 impact를 줄이고 **cache**를 두어 인터넷 프로
 앞서 말했듯이, `HTTP_1.1`에는 `Request`에 문제가 있으면 응답이 늦어지는 **`Head Of Line Blocking`이 발생한다.**    
 HTTP 2에서는 이를 해결한 `MultiPlexing` 이라는 개념이 도입되었다.       
    
-요청과 응답의 순서와 상관없이 먼저 끝나는순으로 Client에서는 응답을 받는 구조이다.   
+위 그림 맨 오른쪽의 형태처럼    
+요청과 응답의 순서와 상관없이 먼저 끝나는순으로 Client에서는 응답을 받는 구조이다.      
 
-
+이 외에도 여러 기능이 추가되었지만, 잘 이해가 가지않고 너무 deep dive하는 것 같아서 여기까지만 정리하겠다.    
+  
+# 📗 HTTPS   
+# 📕REST API    
+  
   
 # 참고 
 [sdc337dc님의 블로그](https://velog.io/@sdc337dc/%EC%9B%B9-%EA%B0%9C%EB%85%90-Http-%ED%86%B5%EC%8B%A0)       
@@ -213,5 +218,3 @@ HTTP 2에서는 이를 해결한 `MultiPlexing` 이라는 개념이 도입되었
 
 
 
-# 📗 HTTPS   
-# 📕REST API    
