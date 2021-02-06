@@ -84,7 +84,7 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
    
 ![RequestMessage.png](./images/RequestMessage.png)
 
-**🔖RequestMessageHeader**  
+**🔖 RequestMessageHeader**  
 `RequestMessageHeader == RequestLine + RequestHeader`  
 HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.      
 
@@ -103,16 +103,15 @@ Header는 Start Line에서 표현되지 않은 더 구체적인 요구를 작성
   
 위 내용들은 아직, 외울 필요없다. 나중에 구글링을 통해 검색하면 된다.    
 보다 자세한 내용은 [MDN Web Docs-HTTP 헤더](https://developer.mozilla.org/ko/docs/Web/HTTP/Headers)
+   
+**🔖 Request Message Body**            
+`POST` 요청의 경우 **업데이트를 하기 위해 서버에 데이터를 전송한다.**                 
+`GET`, `HEAD`, `DELETE` , `OPTIONS`처럼 **리소스를 가져오는 요청은 보통 본문이 필요가 없다.**   
+쉽게 설명하면, 데이터를 전송하려면 body 이용, 가져오려면 header 에 존재하는 url에 쿼리 이용         
+`RequestMessageHeader`와 `RequesetMeessageBody` 사이에는 한 줄의 공백이 있다.                 
 
-**🔖 Request Message Body**     
-
-Header와 Body 사이에는 한 줄의 공백이 있다.         
 
 
-
-**GET VS POST**      
-POST 요청은 클라이언트에서 서버로 전송할 때 추가적인 데이터를 body에 포함할 수 있다.   
-GET 요청은 모든 필요한 데이터를 URL에 포함하여 요청한다.   
 
 
 
