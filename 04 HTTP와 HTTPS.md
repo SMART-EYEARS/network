@@ -87,11 +87,11 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 **RequestMessageHeader**
 * RequestMessageHeader == RequestLine + RequestHeader
 * **RequestLine**     
-    * Request Start Line은 HTTP Method와 Request Target, 프로토콜 버전으로 구성되어있다.
+Request Start Line은 HTTP Method와 Request Target, 프로토콜 버전으로 구성되어있다.
     * **`[HTTP Method](#http-method)`+ `Request Target` + `Http protocol version`**   
     
 * **RequestHeader**   
-    * 
+Header는 Start Line에서 표현되지 않은 더 구체적인 요구를 작성하는 공간이다.   
     * Host : 서버의 도메인 주소 (DNS)  
     * Accpet : 브라우저가 처리할 수 있는 데이터의 형태   
     * Accept-Language : 서버가 돌려주기로 예상된 언어
