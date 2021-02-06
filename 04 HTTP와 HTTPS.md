@@ -77,8 +77,8 @@ HTTP의 입장에서의 웹 브라우저는 서버에 요구를 전달하는 하
 ``` 
    
 이전에 배웠던 관련 내용_TCP 를 이용한 HTTP 통신 : [TCP 3-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-3-way-handshake), [TCP 4-way Handshake](https://github.com/SMART-EYEARS/network/blob/main/03%20TCP%EC%99%80%20UDP.md#-tcp-4-way-handshake)   
-
-## 📖 Request Message & Response Message    
+   
+## 📖 HTTP Message(Request Message & Response Message)       
 ![RequestAndResponseMessage](./images/RequestAndResponseMessage.png)     
 
 ### 📄 Request Message
