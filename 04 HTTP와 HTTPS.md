@@ -134,7 +134,7 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
   
 **📌 정리**      
 * **`HTTP Head` = `start-line` + `HTTP Headers`**
-* **`HTTP Body` = `payload (실질적으로 전송의 목적이 되는 데이터 부분)**
+* **`HTTP Body` = `payload (실질적으로 전송의 목적이 되는 데이터 부분)`**
 
 ### 📄 Response Message   
 > 참고하기 좋은 동영상 : [생활코딩 ResponseMessage](https://opentutorials.org/course/3385/21675)    
@@ -147,11 +147,14 @@ HTTP Request Message는 Start Line, Headers, Message Body로 이루어져있다.
 `HTTP Version + Status Code + Status Text`로 구성된다.     
 상태 코드는 성공 및 실패의 여부를 나타내며, 상태 텍스트는 상태 코드에 대한 간결한 설명을 나타낸다.    
    
-**ReponseHeader**   
+**ResponseHeader**   
 다양한 응답 메타데이터 정보가 들어있으며, 크게 `Response`, `General`, `Entity Header`로 나눌 수 있다.     
-
+     
+![HTTP_Response_Headers.png](./images/HTTP_Response_Headers.png)        
+  
 General, Entity 헤더는 요청 메세지와 동일하며 Response에는 상태 텍스트와 코드에서 미처 나타내지 못한 서버의 메타데이타 정보를 담고 있습니다.
 주요 항목 소개(Response)
+
 Access-Control-Allow-Origin : 응답이 origin으로 부터의 요청 코드와 공유될 수 있는지를 나타냅니다. 만약 프론트엔드와 백엔드 주소가 다르면 CORS 에러 발생
 Set-cookie : 서버에서 사용자 브라우저에 쿠키를 전송하기 위해 사용합니다.
 Last-Modified : 서버가 알고있는 가장 마지막 수정된 날짜와 시각입니다. 저장된 리소스가 이전과 같은지 유효성 검사자로 사용됩니다.
