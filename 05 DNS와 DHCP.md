@@ -75,6 +75,8 @@ UDP기반 프로토콜로 네트워크 부하에 따라 IP할당이 지연되거
     
 ## 📖 DHCP 원리      
 
+![DHCPProcess.png](./images/DHCPProcess.png)
+
 
 
 
