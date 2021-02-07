@@ -75,10 +75,16 @@ UDP기반 프로토콜로 네트워크 부하에 따라 IP할당이 지연되거
     
 ## 📖 DHCP 원리      
 
-![DHCPProcess.png](./images/DHCPProcess.png)
-
-
-
+![DHCPProcess.png](./images/DHCPProcess.png)    
+[사진 출처](https://www.netmanias.com/ko/post/blog/5348/dhcp-ip-allocation-network-protocol/understanding-the-basic-operations-of-dhcp)   
+   
+DHCP를 통한 IP 주소 할당은 **`임대`** 라는 개념을 가지고 있다.        
+이는 DHCP 서버가 IP 주소를 영구적으로 단말에 할당하는 것이 아니고     
+**임대기간(IP Lease Time)을 명시하여 그 기간 동안만 단말이 IP 주소를 사용하도록 하는 것을 의미한다.**    
+  
+단말은 임대기간 이후에도 계속 해당 IP 주소를 사용하고자 한다면       
+IP 주소 **임대기간 연장(IP Address Renewal)** 을 DHCP 서버에 요청해야 하고      
+또한 단말은 임대 받은 IP 주소가 더 이상 필요치 않게 되면 IP 주소 **반납 절차(IP Address Release)** 를 수행하면 된다.   
 
 
 
