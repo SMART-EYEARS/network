@@ -22,25 +22,24 @@ ip는 숫자로 된 식별자이다. 그렇기 때문에 사람이 일일히 이
 즉, DNS란 특정 노드의 주소를 찾기 위해, 사람이 이해하기 쉬운 도메인 이름을 **IP 주소로 변환해주는 역할을 한다.**                 
                 
 ## 📖 DNS Lookup                   
-
-브라우저가 URL에 적힌 값을 파싱해서 HTTP Request Message를 만들고, OS에 전송 요청을 한다.   
-하지만, 이 때 **IP주소가 아닌 Domain만으로 요청을 보낼 수 없기 때문에 DNS Lookup을 수행한다.**   
-
+ 
+![DNSProcess.png](./images/DNSProcess.png)       
+  
+브라우저가 URL에 적힌 값을 파싱해서 HTTP Request Message를 만들고, OS에 전송 요청을 한다.      
+하지만, 이 때 **IP주소가 아닌 Domain만으로 요청을 보낼 수 없기 때문에 DNS Lookup을 수행한다.**    
+     
+* Recursive Query : Local DNS 서버가 여러 DNS 서버를 차례대로            
+`Root DNS 서버` -> `com DNS 서버` -> `naver.com DNS 서버` 질의해서 답을 찾아가는 과정        
+   
 DNS 룩업 과정은 `브라우저` → `hosts 파일` → `DNS Cache`의 순서로 도메인에 매칭되는 ip를 찾는다.    
 일반적으로 설명하는 DNS Lookup은 루트 도메인서버에서부터 서브도메인 서버순으로 찾게된다.     
      
 💡 **브라우저 주소창에 http://www.naver.com 입력 후 엔터를 눌렀을 때 부터 페이지가 렌더링되는 과정을 상세히 설명하세요.**        
       
-![DNSProcess.png](./images/DNSProcess.png)  
-* Recursive Query : Local DNS 서버가 여러 DNS 서버를 차례대로       
-`Root DNS 서버` -> `com DNS 서버` -> `naver.com DNS 서버` 질의해서 답을 찾아가는 과정   
-
 1. 클라이언트에서 미리 설정되어있는 DNS(Local DNS)에게 `naver.com`대한 IP주소를 요청한다.              
 2. local DNS 서버에 없다면 **루트 DNS 서버에 물어본다.** 있다면 바로 해당 ip로 받아온다. 
 3. 루트 DNS 서버에 없다면 **`.com` 을 관리하는 DNS 서버에 물어본다.** 있다면 바로 해당 ip를 받아온다.
 4. .com 을 관리하는 DNS 서버에 없다면, **`naver.com`을 관리하는 DNS 서버에 물어본다.** 있다면 바로 해당 ip를 받아온다.
-5. 서브도메인을 계속 탐색하고 없으면 404 에러 메세지를 응답한다.     
-
 5. 목적지의 ip를 알게되었으니 TCP 통신을 통해 소켓을 개방한다.
 6. HTTP 프로토콜로 요청한다.    
 7. 만약 라우팅 중 프록시 서버를 만난다면 웹 캐시에 저장된 정보를 response 받는다.    
