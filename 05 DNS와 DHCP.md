@@ -30,17 +30,21 @@ DNS 룩업 과정은 `브라우저` → `hosts 파일` → `DNS Cache`의 순서
 일반적으로 설명하는 DNS Lookup은 루트 도메인서버에서부터 서브도메인 서버순으로 찾게된다.     
      
 💡 **브라우저 주소창에 http://www.naver.com 입력 후 엔터를 눌렀을 때 부터 페이지가 렌더링되는 과정을 상세히 설명하세요.**        
-    
-![DNSProcess.png](./images/DNSProcess.png)
+      
+![DNSProcess.png](./images/DNSProcess.png)  
+* Recursive Query : Local DNS 서버가 여러 DNS 서버를 차례대로       
+`Root DNS 서버` -> `com DNS 서버` -> `naver.com DNS 서버` 질의해서 답을 찾아가는 과정   
 
 1. 클라이언트에서 미리 설정되어있는 DNS(Local DNS)에게 `naver.com`대한 IP주소를 요청한다.              
-2. local DNS 서버에 없다면 루트 DNS 서버에 물어본다. 있다면 바로 해당 ip로 받아온다. 
-3. 루트 DNS 서버에 없다면 .com 을 관리하는 DNS 서버에 물어본다. 있다면 바로 해당 ip를 받아온다.
-4. .com 을 관리하는 DNS 서버에 없다면, naver.com을 관리하는 DNS 서버에 물어본다. 있다면 바로 해당 ip를 받아온다.
+2. local DNS 서버에 없다면 **루트 DNS 서버에 물어본다.** 있다면 바로 해당 ip로 받아온다. 
+3. 루트 DNS 서버에 없다면 **`.com` 을 관리하는 DNS 서버에 물어본다.** 있다면 바로 해당 ip를 받아온다.
+4. .com 을 관리하는 DNS 서버에 없다면, **`naver.com`을 관리하는 DNS 서버에 물어본다.** 있다면 바로 해당 ip를 받아온다.
+5. 서브도메인을 계속 탐색하고 없으면 404 에러 메세지를 응답한다.     
+
 5. 목적지의 ip를 알게되었으니 TCP 통신을 통해 소켓을 개방한다.
 6. HTTP 프로토콜로 요청한다.    
 7. 만약 라우팅 중 프록시 서버를 만난다면 웹 캐시에 저장된 정보를 response 받는다.    
-8. 프록시 서버를 만나지 못해 www.naver.com을 서빙하는 서버까지 간다면 서버에서 요청에 맞는 데이터를 response로 전송한다.    
+8. 프록시 서버를 만나지 못해 `www.naver.com`을 서빙하는 서버까지 간다면 서버에서 요청에 맞는 데이터를 response로 전송한다.    
 9. 브라우저의 loader가 해당 response를 다운로드할지 말지 결정을한다.       
 10. 브라우저의 웹 엔진이 다운로드한 .html 파일을 파싱하여 DOM 트리를 결정한다.
 11. .html 파싱중 script 태그를 만나면 파싱을 중단하는 것이 원칙(지연 가능).
