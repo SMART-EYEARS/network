@@ -23,9 +23,25 @@ ip는 숫자로 된 식별자이다. 그렇기 때문에 사람이 일일히 이
               
 ## 📖 DNS Process                 
  
+![DNSProcess.png](./images/DNSProcess.png)
 
-
-
+ 
+1. 클라이언트에서 미리 설정되어있는 DNS(Local DNS)에게 Domin에 대한 IP주소를 요청한다.              
+Local DNS에 이미 요청된 Domain이 실제 존재하면 바로 넘겨주고, 없으면 이를 찾기위한 작업을 진행한다.              
+2. Local DNS는 Domain에 대한 IP 주소를 찾아내기 위해 다른 DNS 서버들과 통신(DNS 메시지)을 시작한다.        
+먼저 **`Root DNS 서버`에게 "Domain에 대한 IP 주소 아니?"라고 물어본다**          
+단, 이를 위해 각 Local DNS 서버에는 Root DNS 서버의 정보 (IP 주소)가 미리 설정되어 있어야 한다.     
+3. 만약, `Root DNS 서버`가 요청한 Domain의 IP주소를 모른다면 다른 DNS 서버에게 요청해보라고 응답을 한다.   
+이때, 다른 DNS는 "com 도메인", "org 도메인", "net 도메인" 등이 있다.   
+물론, `Root DNS`가 요청한 Domain의 IP주소를 알면 이를 바로 리턴해준다.     
+4. Local DNS 서버는 `com 도메인을 관리하는 DNS 서버`에게 다시 **"Domain에 대한 IP 주소 아니?"라고 물어본다.**   
+5. 만약, `com 도메인을 관리하는 DNS 서버`가 요청한 Domain의 IP주소를 모른다면 다른 DNS 서버에게 요청해보라고 응답을 한다.   
+이때, 다른 DNS는 com보다 상위 계층의 DNS를 의미한다.(예를 들어 naver.com 을 관리하는 DNS, daum을 관리하는 DNS 등등)           
+물론, `naver.com 도메인을 관리하는 DNS 서버`가 요청한 Domain의 IP주소를 알면 이를 바로 리턴해준다.        
+6. Local DNS 서버는 `naver.com 도메인을 관리하는 DNS 서버`에게 다시 **"Domain에 대한 IP 주소 아니?"라고 물어본다.**   
+7. 드디어 `naver.com 도메인을 관리하는 DNS 서버`에서 IP를 응답해준다.  
+8. IP 주소를 수신한 Local DNS는 www.naver.com에 대한 **IP 주소를 캐싱**을 하고(다시 물어보면 바로 응답을 줄 수 있도록)
+그 IP 주소 정보를 단말(PC)에 전달해 줍니다.    
 
 
 # 📗 DHCP  
