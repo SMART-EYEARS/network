@@ -27,12 +27,12 @@ ip는 숫자로 된 식별자이다. 그렇기 때문에 사람이 일일히 이
 DNS 룩업 과정은 크롬의 경우 브라우저 → hosts 파일 → DNS Cache의 순서로 도메인에 매칭되는 ip를 찾습니다. 일반적으로 설명하는 DNS Lookup은 루트 도메인서버에서부터 서브도메인 서버순으로 찾게됩니다.
 
 이 요청은 프로토콜 스택이라는 OS에 내장된 네트워크 제어용 소프트웨어에 의해 패킷에 담기고 패킷에 제어정보를 덧붙여 LAN 어댑터에 전송하고, LAN 어댑터는 이를 전기신호로 변환시켜 송출합니다.
+  
+## 📖 DNS Process                   
+> 💡 브라우저 주소창에 http://www.test.com 입력 후 엔터를 눌렀을 때 부터 페이지가 렌더링되는 과정을 상세히 설명하세요.     
 
-## 📖 DNS Process                 
- 
 ![DNSProcess.png](./images/DNSProcess.png)
 
- 
 1. 클라이언트에서 미리 설정되어있는 DNS(Local DNS)에게 Domin에 대한 IP주소를 요청한다.              
 Local DNS에 이미 요청된 Domain이 실제 존재하면 바로 넘겨주고, 없으면 이를 찾기위한 작업을 진행한다.              
 2. Local DNS는 Domain에 대한 IP 주소를 찾아내기 위해 다른 DNS 서버들과 통신(DNS 메시지)을 시작한다.        
