@@ -1,1 +1,2931 @@
+07 RESTAPI    
+=======================    
+시대가 변하면서 다양한 브라우저와 모바일 기기가 탄생하고 있다.         
+이러한 다양한 기기들을 단일 서버로 데이터를 관리하여 유연하게 클라이언트 영역을 대응할 수 있는 방법이 있는데, 바로 REST 서버이다.           
+클라이언트는 단지 REST 서버를 통해 데이터를 받아와서 각 기기별로 대응하면 된다.               
+                
+REST는 웹의 장점을 극대화하는 통신 네트워크 아키텍처다.            
+REST의 구현 원칙을 제대로 지키는 시스템을 RESTful 이라고 한다.             
+현재 웹에서 사용하는 대부분의 데이터 통신이 REST API라고 해도 과언이 아니다.        
+                           
+# 1. 배경지식  
+## 1.1. REST 소개    
+REST 는 웹과 같은 **분산 하이퍼미디어 시스템에서 사용하는 통신 네트워크 아키텍처**로, 네트워크 아키텍처의 원리 모음이다.       
+                     
+**웹은 전송 방식으로 `HTTP`,**      
+**식별 방법**으로 `URI`를 사용한다.**    
+       
+HTTP는 웹에서 `GET`, `POST`, `PUT`, `DELETE` 등의 메소드를 사용하여 정보를 주고받는 프로토콜이다.               
+REST는 **HTTP 와 URI의 단순하고 간결한 장점을 계승화한 네트워크 아키텍처**입니다.                 
+따라서 다양한 요구사항에 대응하여 때로는 단순하게,           
+때로는 서버와 클라이언트가 서로 통신하는 리소스에 대해 복잡한 방식으로 상호작용할 수 있다.                     
+           
+쉽게 설명하면, HTTP Method + URL로 **보다 적은 URL 사용**하는데,   
+이로 인해 생기는 장점이 너무 많다.   
+      
+* 하나의 URL을 통해 다양한 작업 가능 -> Client/Server 양쪽에게 이득          
+* 무수히 많은 URL을 관리할 필요 없음 -> 기존보다, 메서드의 갯수만큼 나눠서 줄어듬       
+* 규약이지만 `URL을 좀 명확하게 작성하자`하여 가독성이 증대되었다.      
+
+REST는 다음과 같은 목적으로 만들어졌다.      
+          
+* 구성요소 상호작용의 규모 확장성        
+* 인터페이스 범용성            
+* 구성요소의 독립적인 배포          
+* 중간적 구성요소를 이용한 응답 지연 감소, 보안 강화, 레거시 시스템 인캡슐레이션      
+ 
+**URI(Uniform Resouce Identifier, 통합자원식별자)**    
+```
+URI(Uniform Resouce Identifier, 통합자원식별자)는 인터넷에서 특정 자원을 나타내는 유일한 주솟값입니다.   
+REST API 는 URI를 사용하여 자원을 처리합니다.     
+```
+
+## 1.2. RESTful 제약조건    
+앞서 REST의 구현 원칙을 제대로 지키면서 REST 아키텍처를 만드는 것을 RESTful 이라고 설명했습니다.          
+다음은 RESTful 제약조건입니다.         
+      
+* **클라이언트-서버** :           
+이 제약 조건의 기본 원칙은 관심사의 명확한 분리입니다.          
+관심사의 명확한 분리가 선행되면 서버의 구성요소가 단순화되고 확장성이 향상되어 여러 플랫폼을 지원할 수 있습니다.          
+         
+* **무상태성** :        
+서버에 클라이언트의 상태 정보를 저장하지 않는 것을 의미합니다.             
+단순히 들어오는 요청만 처리하여 구현을 더 단순화 합니다.         
+단, 클라이언트의 모든 요청은 서버가 요청을 알아듣는데 필요한 모든 정보를 담고 있어야 합니다.        
+      
+* **캐시 기능** :     
+클라이언트의 응답을 캐시할 수 있어야 합니다.       
+앞에서 HTTP의 장점을 그대로 계승한 아키택처가 REST라고 했습니다.        
+따라서 HTTP의 캐시 기능도 적용할 수 있습니다.      
+       
+* **계층화 시스템** :       
+서버는 중계 서버(게이트웨이, 프록시)나 로드 밸런싱, 공유 캐시등의 기능을 사용하여 확장성 있는 시스템을 구성할 수 있습니다.        
+이 제약조건은 선택적 제약 조건입니다.       
+    
+* **코드 온 디맨드** :   
+클라이언트는 서버에서 자바 애플릿, 자바스크립트 같은 실행 코드를 전송받아 기능을 일시적으로 확장할 수 있습니다.   
+이 제약조건은 선택적 제약 조건입니다.         
+    
+* **인터페이스 일관성** :    
+URI로 지정된 리소스에 균일하고 통일된 인터페이스를 제공합니다.         
+아키텍처를 단순하게 분리하여 단순하게 만들 수 있습니다.      
+
+### 1.2.1. 인터페이스 일관성        
+인터페이스 일관성은 세부 원칙을 가지고 있습니다.       
+인터페이스 일관성이 잘 지켜졌는지에 따라 REST를 제대로 사용했는지 판단할 수 있습니다.      
+인터페이스 일관성에는 다음 4가지가 존재합니다.        
+         
+1. 자원 식별                  
+2. 메시지를 통한 리소스 조작             
+3. 자기 서술적 메시지           
+4. 애플리케이션 상태에 대한 엔진으로서의 하이퍼미디어               
+    
+___ 
+    
+**자원 식별** :          
+웹 기반의 REST에서 리소스 접근을 주로 URI를 사용한다는 것을 나타냅니다.         
+즉, 각각의 리소스는 요청에서 식별가능합니다.        
+ 
+```
+http://localhost:8080/resource/1
+```
+예를 들어 URI에서 정보는 ```resouce```, 유일한 구분자는 ```1```로 식별합니다.         
+   
+___
+   
+**메시지를 통한 리소스 조작** :       
+클라이언트가 특정 메시지나 메타데이터를 가지고 있으면 자원을 수정, 삭제하는 충분한 정보를 갖고 있는 것으로 볼 수 있습니다.       
+
+```
+http://localhost:8080/resource/1
+content-type: application/json    
+```   
+예를 들어 코드에서 ```content-type``` 은 리소스가 어떤 형식인지 지정합니다.    
+리소스는 HTML, XML, JSON 등 다양한 형식으로 전송됩니다.     
+    
+___    
+        
+**자기 서술적 메시지** :    
+각 메시지는 자신을 어떻게 처리해야 하는지 충분한 정보를 포함해야 합니다.     
+웹 기반의 REST에서는 HTPP Method 와 Header 를 활용합니다.       
+
+```
+GET http://localhost:8080/resource/1     
+content-type: application/json    
+```   
+예를 들어 GET 메서드를 활용하여 ```/resource/1```의 정보를 받아온다는 것을 표현했습니다.     
+    
+___    
+    
+**HATEOAS** :     
+애플리케이션 상태에 대한 엔진으로서의 하이퍼 미디어      
+이는 클라이언트에 응답할 때 단순히 결과 데이터만 제공해주기보다는 URI를 함께 제공해야한다는 원칙입니다.    
+하이퍼텍스트 링크처럼 관련된 리소스 정보를 포합합니다. 이에 관한 정보는 ```(링크 걸기)[#]``` 에서 확인합시다.      
+    
+REST의 제약조건들을 제대로 지키면서 REST 아키텍처를 만드는 것을 RESTful 이라고 합니다.    
+특히 제약 조건 중 하이퍼텍스트를 포함하고 자기 서술적이며 인터페이스 일관성을 통해 리소스에 접근하는 API여야 RESTFful 하다 할 수 있습니다.  
+더 쉽게 말해서 인터페이스가 일관된 표준이 있어야합니다.       
+자기 자신이 어떻게 처리되는지에 대한 충분한 정보, 관련된 리소스를 하이퍼텍스트 링크로 포함시켜야 'RESTful 하구나' 생각할 수 있습니다.         
+여기서 HATEOAS는 응답 데이터와 관련된 하이퍼미디어 링크를 추가하여 사이트의 REST 인터페이스를 동적으로 탐색하도록 도와줍니다.       
+       
+* 클라이언트는 관련된 특정 동작에 따라 탐색할 만한 URI 값을 알 수 있습니다.       
+URI는 resource 까지 포함하므로 더 명확하게 예측이 가능합니다.        
+     
+* 키 값이 변하지 않는 한 URI가 변경되더라도 동적으로 사용할 수 있습니다.         
+따라서 서버쪽 코드가 변하더라도 클라이언트 코드를 따로 수정할 필요가 없습니다.      
+
+
+## 1.3. REST API 설계하기    
+서버 한대가 여러 클라이언트에 대응하려면 REST API가 필요합니다.     
+REST API는 다음과 같이 구성합니다.      
+     
+* 자원 : URI   
+* 행위 : HTTP 메서드   
+* 표현 : 리소스에 대한 표현 (HTTP Message Body)       
+
+### 1.3.1. URI 설계    
+URI는 URL을 포함하는 개념입니다.      
+      
+**URL(Uniform Resouce Locator, 파일식별자)**   
+```
+URL(Uniform Resouce Locator, 파일식별자) 은 인터넷상에서 자원, 즉 특정 파일이 어디에 위치하는지 식별하는 방법입니다.   
+```
+
+**URL 예시**   
+```  
+http://localhost:8080/api/book.pdf      
+```  
+URL은 웹상의 파일 위치를 표현합니다.    
+    
+**URI 예시**   
+```  
+http://localhost:8080/api/book/1         
+```   
+URI는 웹에 있는 자원의 이름과 위치를 식별합니다.       
+   
+그렇기에 URL은 URI의 하위 개념입니다.    
+URL이 리소스를 가져오는 방법에 대한 위치라면 URI는 문자열을 식별하기 위한 표준입니다.      
+     
+___
+    
+```
+http://localhost:8080/api/read/books   
+```   
+URI은 명사를 사용해야 하며 동사를 피해야합니다.          
+위 같은 코드는 ```/read/```라는 동사가 들어 있으므로 좋지 못한 코드라고 할 수 있습니다.   
+   
+```
+GET http://localhost:8080/api/books   
+content-type: application/json
+```    
+이처럼 동사를 표현할 때는 HTTP 메서드인 GET, POST, PUT, DELETE 등으로 대체해야 합니다.         
+하지만 모든 경우에 완벽하게 호환되지는 않습니다.       
+세부적인 동사의 경우 URI에 포함될 수 밖에 없습니다.        
+가령 모바일 결제라는 REST API를 설계한다고 가정할 경우 OTP 발행, 결제 진행, 기타 API 동작에 대해 HTTP 메서드만으로 대응하기 힘듭니다.     
+앞의 URI 설계에 대한 원칙은 어디까지나 불필요한 동사를 URI에 포함하는 것을 지양해야 한다는 것이지 완전히 배제시킨다는 것은 아닙니다.   
+    
+### 1.3.2. 복수형을 사용해라     
+URI에서는 명사에 단수형보다는 복수형을 사용해야 합니다.        
+```/book```도 물론 명사고 사용가능하지만       
+```/books```로 리소스를 표현하면 컬렉션으로 명확하게 표현할 수 있어 확장성 측면에서 더 좋습니다.     
+주로 사용되는 인터페이스는 Set, List, Queue, Deque입니다.         
+이러한 컬렉션은 객체의 단일 단위, 즉 그룹을 나타냅니다.      
+  
+```javascript    
+{
+     books: [
+          {
+               book: ...
+          },
+          {
+               book: ...
+          },
+          {
+               book: ...
+          },
+     ]
+}
+```
+그리고 컬렉션으로 URI를 사용할 경우 컬렉션을 한번 더 감싼 중첩 형식을 사용하는 것이 좋습니다.    
+만약 중첩하지 않고 바로 컬렉션을 반환하면 추후 수정할 때나 확장할 때 번거롭게 됩니다.    
+      
+예를 들어 중첩하지 않고 하나의 ```books``` 컬렉션만 보내는 도중 다른 요구사항이 있다고 가정합시다.    
+요구사항이 전혀 다른 ```stores``` 컬렉션을 추가하는 겁니다.    
+기존의 형태가 ```키값 + 컬렉션``` 으로 중첩된 형태가 아니기 때문에 ```stores``` 컬렉션을 추가하기 위해 기존의 형태가 깨지게 됩니다.     
+그렇게 되면 서버에서 API 스펙을 수정하게 되고 클라이언트도 수정된 API 스펙에 맞게 코드를 수정해야합니다.   
+
+```javascript   
+{
+     _embedded: [
+          {
+               books: [
+                    {
+                         book: ...
+                    },
+                    {
+                         book: ...
+                    },
+                    {
+                         book: ...
+                    },
+               ]
+          },
+          {
+               stores: [
+                    {
+                         store: ...
+                    },
+                    {
+                         store: ...
+                    },
+                    {
+                         store: ...
+                    },
+               ]
+          }          
+     ]
+}
+```
+위 코드는 앞서 말한 방식대로 작성한 코드입니다.       
+```-embedded : []``` 내부에 기존 컬레션의 키 값이 유지되게 보낼 경우        
+서버의 API 스펙이 변경되더라도 클라이언트는 따로 코드를 수정할 필요가 없습니다.      
+   
+이렇게 확장성을 나타내는 (중첩 형태를 나타내는) ```_embedded```로 데이터를 감싸서 여러 키값을 한번에 보낼 수 있습니다.      
+이런 형식을 유지하면 뒤늦게 데이터가 추가되어도 기존에 제공한 ```books``` 데이터와 관련된 부분을 수정하지 않아도 됩니다.           
+    
+### 1.3.3. 행위 설계   
+```books```의 동사 부분을 HTTP 메서드를 사용하여 표현하면 다음과 같습니다.      
+     
+[사진]   
+   
+```/books```의 경우 book의 목록을 표현한다는 기본 전제가 깔려있습니다.         
+따라서 ```/books```로 URI를 표현하면 기본적으로 복수를 나타내며 작게는 하나의 단위를 나타낼 수 있게 됩니다.        
+즉, ```/books/{단일값}```은 books 의 목록 중 특정 book을 사용합니다.        
+이제 원하는 행위에 따라 동사를 선택적으로 사용합니다.        
+    
+```/books``` 자체가 복수의 book을 의미하므로 books를 게시판에 표현할 때 페이징을 처리하는 값을 추가로 제공할 수도 있습니다.    
+추가 값으로 페이지, 크기, 정렬, 등의 파라미터를 지정할 수 있습니다.      
+아래와 같이 JPA의 Pageable의 프로퍼티 값을 그대로 사용할 수 있습니다.      
+
+```
+GET http://localhost:8080/api/books?page=0&size=10&sort=desc
+content-type: application/json    
+```    
+page, size, sort 파라미터를 따로 지정하지 않으면 서버에서 기본으로 설정한 값으로 반환됩니다.   
+    
+**POST** 는 book 하나를 새로 생성하여 저장하는 역할을 수행합니다.         
+생성할 book 객체에는 아직 ID 값이 없으므로 ```/books```에서 POST를 요청하는 형태로 API가 설계됩니다.             
+ 
+**PUT** 은 특정 book 객체를 수정할 때 사용하며 ID값이 있으므로 ID값을 대상으로 진행합니다.            
+  
+**DELETE** 는 특정 book 객체를 삭제할 때 사용하며 ID값이 있으므로 ID값을 대상으로 진행합니다.           
+     
+***    
+# 2. 설계하기   
+REST API 를 MVC 패턴을 이용한 방법과 스프링부트 데이터 레스트를 사용하는 방법으로 구현해보겠습니다.      
+두 방법을 모두 다루는 이유는 각 방식의 장단점을 체험하며 비교해보기 위해서입니다.      
+      
+[사진]     
+   
+생동감 있는 프로젝트 진행을 위해 4장에서 다룬 게시판 프로젝트에서         
+미완으로 남겨두었던 생성/수정/삭제 기능을 REST API로 개발하여 서로 연동하겠습니다.         
+   
+사진을 보면 클라이언트 DB가 기존에는 (1)과 같이 직접 데이터를 주고 받았습니다.          
+REST API를 사용하면 (2),(3)과 같이 클라이언트와 DB 사이클 REST API가 중계하게 됩니다.       
+이러한 구조는 REST API에서 노출하고 싶은 데이터만 노출할 수 있으며       
+데이터를 캐시하여 성능도 향상되는 구조까지 가질 수 있습니다.      
+따라서 기존에 직접 데이터를 주고받던 과정은 사라집니다.     
+즉 (1)의 흐름은 없어집니다.      
+
+## 2.1. MVC 패턴을 활용하는 방법     
+MVC 패턴으로 프로젝트를 생성하면 컨트롤러, 서비스, 레포지토리로 나누어 데이터의 운반 처리를 세부적으로 조작할 수 있습니다.      
+기존의 웹과 거의 차이가 없고 단지 데이터의 반환 형태가 HTML 이냐 JSON,XML 등의 형태냐의 차이입니다.      
+내부 구성을 도식화하면 다음과 같습니다.    
+       
+[사진]        
+    
+## 2.2. 스프링 부트 데이터 레스트를 활용하는 방법      
+스프링 부트 데이터 레스트는 리포지토리 하나만 생성하면 됩니다.       
+MVC 패턴을 활용한 방식과 달리 컨트롤러와 서비스 단계가 없습니다.         
+필요하다면 생성하여 사용할 수도 있는데 이는 ```(링크)[]```에서 살펴보겠습니다.         
+       
+스프링 부트 데이터 레스트는 REST URL 요청을 리포지토리 내부의 CRUD 메서드와 매핑하여 처리합니다.       
+즉 처리 영역들이 스프링 부트 데이터 레스트 라이브러리 내부에 미리 만들어져 있어 컨트롤러와 서비스 영역을 자동화할 수 있습니다.    
+따라서 다음과 같이 간단하게 REST API를 사용하는 애플리케이션을 설계할 수 있습니다.       
+    
+[사진]   
+
+# 3. 스프링 부트 MVC 패턴으로 REST API 구현하기       
+
+1. 클라이언트와 REST API의 통신을 위한 클라이언트 쪽 스크립트 코드 추가  
+2. REST API 개발 환경 설정   
+3. CORS 허용 및 시큐리티 설정   
+4. 생성, 수정, 삭제 기능 구현 
+
+## 3.1. 준비하기            
+커뮤니티 게시판과 연동하려면 클라이언트 쪽에 자바스크립트로 통신용 코드를 구현해야합니다.             
+여기서 생성/수정/삭제에 대한 요청을 AJAX 로 하면 비동기로 서버와 통신할 수 있으므로 페이지 변화 없이 데이터를 요청하여 응답받고 대응하는 코드를 추가할 수 있습니다.              
+다음과 같이 AJAX로 코드를 작성하겠습니다.           
+    
+**form.html**
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Board Form</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div th:replace="layout/header::header"></div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>게시글 등록</h1>
+        </div>
+        <br/>
+        <input id="board_idx" type="hidden" th:value="${board?.idx}"/>
+        <input id="board_create_date" type="hidden" th:value="${board?.createdDate}"/>
+        <table class="table">
+            <tr>
+                <th style="padding:13px 0 0 15px">게시판 선택</th>
+                <td>
+                    <div class="pull-left">
+                        <select class="form-control input-sm" id="board_type">
+                            <option>--분류--</option>
+                            <option th:value="notice" th:selected="${board?.boardType?.name() == 'notice'}">공지사항</option>
+                            <option th:value="free" th:selected="${board?.boardType?.name() == 'free'}">자유게시판</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th style="padding:13px 0 0 15px;">생성날짜</th>
+                <td><input type="text" class="col-md-1 form-control input-sm" readonly="readonly" th:value="${board?.createdDate} ? ${#temporals.format(board.createdDate,'yyyy-MM-dd HH:mm')} : ${board?.createdDate}"/></td>
+            </tr>
+            <tr>
+                <th style="padding:13px 0 0 15px;">제목</th>
+                <td><input id="board_title" type="text" class="col-md-1 form-control input-sm" th:value="${board?.title}"/></td>
+            </tr>
+            <tr>
+                <th style="padding:13px 0 0 15px;">부제목</th>
+                <td><input id="board_sub_title" type="text" class="col-md-1 form-control input-sm" th:value="${board?.subTitle}"/></td>
+            </tr>
+            <tr>
+                <th style="padding:13px 0 0 15px;">내용</th>
+                <td><textarea id="board_content" class="col-md-1 form-control input-sm" maxlength="140" rows="7" style="height: 200px;"
+                th:text="${board?.content}"></textarea><span class="help-block"></span>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <div class="pull-left">
+            <a href="/board/list" class="btn btn-default">목록으로</a>
+        </div>
+        <div class="pull-right">
+            <button th:if="!${board?.idx}" type="button" class="btn btn-primary" id="insert">저장</button>
+            <button th:if="${board?.idx}" type="button" class="btn btn-info" id="update">수정</button>
+            <button th:if="${board?.idx}" type="button" class="btn btn-danger" id="delete">삭제</button>
+        </div>
+    </div>
+
+    <div th:replace="layout/footer::footer"></div>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:if="!${board?.idx}">
+        $('#insert').click(function () {
+            var jsonData = JSON.stringify({
+                title: $('#board_title').val(),
+                subTitle: $('#board_sub_title').val(),
+                content: $('#board_content').val(),
+                boardType: $('#board_type option:selected').val()
+            });
+            $.ajax({
+                       url: "http://localhost:8081/api/boards",
+                       type: "POST",
+                       data: jsonData,
+                       contentType: "application/json",
+                       headers: {
+                           "Authorization": "Basic " + btoa("havi" + ":" + "test")
+                       },
+                       dataType: "json",
+                           success: function () {
+                               alert('저장 성공!');
+                               location.href = '/board/list';
+                       },
+                       error: function () {
+                           alert('저장 실패!');
+                       }
+                   });
+        });
+    </script>
+    <script th:if="${board?.idx}">
+        $('#update').click(function () {
+            var jsonData = JSON.stringify({
+                title: $('#board_title').val(),
+                subTitle: $('#board_sub_title').val(),
+                content: $('#board_content').val(),
+                boardType: $('#board_type option:selected').val(),
+                createdDate: $('#board_create_date').val()
+            });
+            $.ajax({
+                       url: "http://localhost:8081/api/boards/" + $('#board_idx').val(),
+                       type: "PUT",
+                       data: jsonData,
+                       contentType: "application/json",
+                       dataType: "json",
+                       success: function () {
+                           alert('수정 성공!');
+                           location.href = '/board/list';
+                       },
+                       error: function () {
+                           alert('수정 실패!');
+                       }
+                   });
+        });
+        $('#delete').click(function () {
+            $.ajax({
+                       url: "http://localhost:8081/api/boards/" + $('#board_idx').val(),
+                       type: "DELETE",
+                       success: function () {
+                           alert('삭제 성공!');
+                           location.href = '/board/list';
+                       },
+                       error: function () {
+                           alert('삭제 실패!');
+                       }
+                   });
+        });
+    </script>
+</body>
+</html>
+```
+    
+___
+    
+```html
+        <input id="board_create_date" type="hidden" th:value="${board?.createdDate}"/>
+```
+기존 코드에서는 thymeleaf-extras-java8time 라이브러리를 사용하여 자바 8의 날짜값을 보기 편한 형식으로 변환했습니다.    
+그리고 AJAX 통신에 사용하는 ```created_date``` 값을 hidden 타입의 input 필드로 추가했습니다.       
+    
+___    
+    
+```html   
+ <script th:if="!${board?.idx}">
+        $('#insert').click(function () {
+            var jsonData = JSON.stringify({
+                title: $('#board_title').val(),
+                subTitle: $('#board_sub_title').val(),
+                content: $('#board_content').val(),
+                boardType: $('#board_type option:selected').val()
+            });
+            $.ajax({
+                       url: "http://localhost:8081/api/boards",
+                       type: "POST",
+                       data: jsonData,
+                       contentType: "application/json",
+                       headers: {
+                           "Authorization": "Basic " + btoa("havi" + ":" + "test")
+                       },
+                       dataType: "json",
+                           success: function () {
+                               alert('저장 성공!');
+                               location.href = '/board/list';
+                       },
+                       error: function () {
+                           alert('저장 실패!');
+                       }
+                   });
+        });
+    </script>
+```   
+board의 idx 값이 없으면 생성되지 않은 board를 추가합니다.   
+따라서 저장을 위한 AJAX 코드만 포함되도록 설정했습니다.    
+   
+___
+    
+```html
+<script th:if="${board?.idx}">
+</script>
+```
+board 의 idx 값이 있으면 이미 생성된 board를 참조합니다.    
+수정과 삭제가 가능한 스크립트가 포함되도록 설정했습니다.    
+    
+___   
+    
+```javascript
+        $('#update').click(function () {
+            var jsonData = JSON.stringify({
+                title: $('#board_title').val(),
+                subTitle: $('#board_sub_title').val(),
+                content: $('#board_content').val(),
+                boardType: $('#board_type option:selected').val(),
+                createdDate: $('#board_create_date').val()
+            });
+            $.ajax({
+                       url: "http://localhost:8081/api/boards/" + $('#board_idx').val(),
+                       type: "PUT",
+                       data: jsonData,
+                       contentType: "application/json",
+                       dataType: "json",
+                       success: function () {
+                           alert('수정 성공!');
+                           location.href = '/board/list';
+                       },
+                       error: function () {
+                           alert('수정 실패!');
+                       }
+                   });
+        });
+```
+수정시에는 JSON 형식으로 데이터를 만들고     
+```url: "http://localhost:8081/api/boards/" + $('#board_idx').val(),``` 에서 idx를 기준으로 
+PUT 요청하여 해당 board 객체를 수정하도록 합니다.   
+      
+___   
+       
+```javascript
+        $('#delete').click(function () {
+            $.ajax({
+                       url: "http://localhost:8081/api/boards/" + $('#board_idx').val(),
+                       type: "DELETE",
+                       success: function () {
+                           alert('삭제 성공!');
+                           location.href = '/board/list';
+                       },
+                       error: function () {
+                           alert('삭제 실패!');
+                       }
+                   });
+        });
+```
+삭제시에는 따로 데이터를 만들 필요 없이 idx 값을 기준으로 DELETE를 요청하여 데이터를 삭제합니다.   
+   
+___      
+   
+이전에 진행했던 웹 프로젝트는 H2db 를 사용하여 메모리에 데이터를 저장하고 가져왔습니다.      
+이번에는 MySQL가 연동해서 REST API와 함께 사용하겠습니다.         
+```build.gradle``` 파일에 MySQL 의존성을 추가해줍니다.   
+
+```gradle
+	runtime('mysql:mysql-connector-java')
+```
+
+**build.gradle**
+```gradle
+buildscript {
+	ext{
+		springBootVersion = '2.0.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		jcenter()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.web'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile('org.springframework.security:spring-security-oauth2-client')
+	compile('org.springframework.security:spring-security-oauth2-jose')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	runtime('com.h2database:h2')
+	runtime('mysql:mysql-connector-java')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+test {
+	useJUnitPlatform()
+}    
+```
+스프링 부트는 간단하게 MySQL을 연동시킬 수 있습니다.       
+YAML 파일에 MySQL 관련 설정을 아래와 같이 추가합니다.     
+
+```yml
+spring:
+  datasource:
+     url: jdbc:mysql://127.0.0.1/{DB명}
+     username: {아이디}    
+     password: {패스워드}   
+     driver-class-name: com.mysql.jdbc.Driver
+```
+```jpa.hibernate.ddl-auto``` 프로퍼티값을 create 두었습니다.       
+이 옵션은 애플리케이션이 구동될 때마다 기존 테이블을 삭제하고 다시 생성합니다.          
+   
+**application.yml**
+```yml
+spring:
+  #  datasource:
+  #    url: jdbc:mysql://
+  #    username:
+  #    password:
+  #    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+  devtools:
+    livereload:
+      enabled: true
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 
+            client-secret: 
+          facebook:
+            client-id: 
+            client-secret: 
+custom:
+  oauth2:
+    kakao:
+      client-id: 
+```     
+필자 같은 경우는 h2 데이터베이스를 사용할 예정이므로 mysql 관련 내용을 주석처리했습니다.    
+   
+___  
+        
+REST API 프로젝트는 멀티 모듈로 구성하여             
+MVC 패턴을 사용하는 방식은 rest-web 모듈로,               
+스프링 부트 데이터 레스트 방식은 data-rest 모듈로 환경을 구성하겠습니다.          
+성격이 같고 공통된 의존성이 존재하니 멀티 모듈로 구성하며 비교 분석합니다.        
+
+**우선 기존 프로젝트 말고 새로운 프로젝트를 만들어 줍시다.**    
+새로운 프로젝트명을 ```boot-rest``` 로 하여 기본 경로에 새로운 프로젝트를 생성합니다.         
+    
+생성 이후 멀티 모듈로 프로젝트를 구성하고 필요한 의존성을 주입하겠습니다.        
+구성할 모듈은 MVC 패턴의 ```rest-web```과 데이터 레스트 방식의 ```data-rest```로 이름을 정하여 설정할겁니다.    
+    
+* 방법 :      https://github.com/kwj1270/TIL_FIRST_SPRINGBOOT2/blob/master/02%20%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8%20%ED%99%98%EA%B2%BD%20%EC%84%A4%EC%A0%95.md#32-%EA%B7%B8%EB%A0%88%EC%9D%B4%EB%93%A4-%EB%A9%80%ED%8B%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B5%AC%EC%84%B1%ED%95%98%EA%B8%B0             
+        
+**setting.gradle**	
+```gradle
+rootProject.name = 'boot-rest'
+
+include 'data-rest'
+include 'rest-web'
+```
+
+**build.gradle**
+```gradle
+
+buildscript {
+    ext {
+        springBootVersion = '2.0.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.web'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile('org.springframework.boot:spring-boot-starter-security')
+        compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+        compile('org.springframework.data:spring-data-rest-hal-browser')
+
+        runtime('org.springframework.boot:spring-boot-devtools')
+        runtime('mysql:mysql-connector-java')
+        runtime('com.h2database:h2')
+        compileOnly('org.projectlombok:lombok')
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile('org.springframework.security:spring-security-test')
+    }
+}
+
+project(':data-rest') {
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-rest') {
+            exclude module: "jackson-databind"
+        }
+    }
+}
+
+project(':rest-web') {
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-web') {
+            exclude module: "jackson-databind"
+        }
+        compile('org.springframework.boot:spring-boot-starter-hateoas')
+    }
+}
+```
+   
+___
+   
+```gradle
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile('org.springframework.boot:spring-boot-starter-security')
+        compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+        compile('org.springframework.data:spring-data-rest-hal-browser')
+
+        runtime('org.springframework.boot:spring-boot-devtools')
+        runtime('mysql:mysql-connector-java')
+        runtime('com.h2database:h2')
+        compileOnly('org.projectlombok:lombok')
+        testCompile('org.springframework.boot:spring-boot-starter-test')
+        testCompile('org.springframework.security:spring-security-test')
+    }
+```
+공통된 의존성을 담았습니다.      
+한 가지 특별한 점은 jackson-datatype-jsr310 모듈을 넣어서      
+LocalDateTime 타입의 값도 JSNO 형식으로 직렬화와 역직렬화가 가능하도록 설정했다는 것입니다.    
+   
+___
+   
+```gradle
+project(':data-rest') {
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-data-rest') {
+            exclude module: "jackson-databind"
+        }
+    }
+}
+```  
+스프링 부트 데이터 레스트 프로젝트명을 ```data-rest```로 설정하여 데이터 레스트 스타터 의존성을 부여했습니다.       
+jackson 라이브러리의 최신 의존성 부여를 위해 기존 스타터에 포함된 의존성은 제외했습니다.      
+
+___   
+
+```gradle
+project(':rest-web') {
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter-web') {
+            exclude module: "jackson-databind"
+        }
+        compile('org.springframework.boot:spring-boot-starter-hateoas')
+    }
+}
+```
+동일하게 jackson 라이브러리 의존성을 제외한 web 스타터 의존성을 설정했습니다.        
+스프링 부트 데이터 레스트에는 자동으로 포함되어 있는 HATEOAS 제약 조건에 따라 링크를 생성하는 HATEOAS 스타터도 설정했습니다.   
+
+## 3.2. REST API 구현하기    
+DB 설정 프로퍼티인 datasource 를 설정하고,      
+실질적인 REST API의 연결 통로가 되는 RestController 를 생서아하여 REST API를 구현해보겠습니다.          
+그러기 위해 DataSource 설정, 도메인 설정, Repository 설정, RestController 생성, 확인 작업을 진행합니다.       
+        
+기존의 커뮤니티 게시판과 REST API 각각 애플리케이션을 실행할 것이기 때문에 REST API의 포트를 각각 8081번으로 설정하겠습니다.         
+동시에 Web 설정에서 진행했던 것처럼 DB와 연결을 위해 DataSource를 설정합니다.   
+
+```yml
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/{db명}
+    username: {아이디}
+    password: {패스워드}
+    driver-class-name: com.mysql.jdbc.Driver
+server:
+  port: 8081
+```
+      
+**필자의 application.yml**   
+```yml
+spring:
+  #  datasource:
+  #    url: jdbc:mysql://
+  #    username:
+  #    password:
+  #    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+  h2:
+    console:
+      enabled: true
+  devtools:
+    livereload:
+      enabled: true
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1093010447426-6uh6vdc6ss3nnjmhdhhrhcjf1gp5foe9.apps.googleusercontent.com
+            client-secret: NfQxg8vapYITHgtdCjsdjrY1
+          facebook:
+            client-id: 564162601158748
+            client-secret: dd56c82cf93b958f1d00e30b355df0c2
+custom:
+  oauth2:
+    kakao:
+      client-id: 0a7ca146321bc1d63285c916ab12134c
+server:
+  port: 8081
+```
+필자는 mysql을 mysql 을 사용하지 않을 예정이여서 위와 같이 설정했습니다.    
+    
+___       
+
+* Board - 클래스 
+* BoardType - Enum 클래스  
+* SocialType - Enum 클래스   
+* User - 클래스  
+    
+는 기존에 정의해두었던 클래스 그대로 사용할 예정이다.   
+그렇기에 기존 파일을 복사해서 가져온던가    
+       
+https://github.com/kwj1270/TIL_FIRST_SPRINGBOOT2/blob/master/04%20%EC%8A%A4%ED%94%84%EB%A7%81%20%EB%B6%80%ED%8A%B8%20%EC%9B%B9.md#33-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%A7%A4%ED%95%91%ED%95%98%EA%B8%B0      
+       
+위 링크에 들어가서 차례대로 구현해보자    
+    
+___   
+   
+앞에서 생성한 두 개의 도메인에 대해 간단한 Repository를 생성합니다.   
+
+**BoardRepository**
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.Board;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BoardRepository  extends JpaRepository<Board, Long> {}
+```
+
+**UserRepository**
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository  extends JpaRepository<User, Long> {}
+```
+   
+따로 서비스에 처리하는 로직이 없기 때문에 서비스는 제외하고 작성하겠습니다.         
+만약 실제로 돌아가는 서비스에서 로직이 중간에 있어야 한다면 서비스가 반드시 있어야 합니다.     
+  
+___   
+    
+요청을 받는 관문인 컨트롤러를 작성하겠습니다.     
+일단 게시글을 10개씩 페이징 처리하여 가져왔던 데이터를 확장성 있게 중첩된 데이터로 표현할 것이며,    
+HATEOAS를 적용하여 REST 형으로 만들어보겠습니다.    
+     
+**BoardRestController**
+```java
+package com.community.rest.controller;
+
+
+import com.community.rest.domain.Board;
+import com.community.rest.repository.BoardRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.PagedResources.PageMetadata;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+
+@RestController
+@RequestMapping("/api/boards")
+public class BoardRestController {
+
+    private BoardRepository boardRepository;
+
+    public BoardRestController(BoardRepository boardRepository){
+        this.boardRepository = boardRepository;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBoards(@PageableDefault Pageable pageable){
+        Page<Board> boards = boardRepository.findAll(pageable);
+        PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boards.getNumber(), boards.getTotalElements());
+        PagedResources<Board> resources = new PagedResources<>(boards.getContent(), pageMetadata);
+        resources.add(linkTo(methodOn(BoardRestController.class).getBoards(pageable)).withSelfRel());
+        return ResponseEntity.ok(resources);
+
+    }
+
+}
+```
+```java
+    private BoardRepository boardRepository;
+
+    public BoardRestController(BoardRepository boardRepository){
+        this.boardRepository = boardRepository;
+    }
+```
+```@Autowired```와 똑같이 의존성 주입을 하는 생성자 주입 방식입니다. (필드, setter, 생성자)    
+    
+___   
+
+```java
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+```
+GET 으로 ```/api/boards``` 호출 시 해당 메서드에 매핑됩니다. 반환값은 JSON 입니다.    
+    
+___
+   
+```java
+        Page<Board> boards = boardRepository.findAll(pageable);
+        PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boards.getNumber(), boards.getTotalElements());
+```
+한 페이지의 게시판 수, 현재 페이지 수, 총 게시판 수 등 페이징 처리에 관한 리소스를 만드는 PagedResources 객체를 생성하기 위해      
+PageResources 생성자의 파라미터로 사용되는 PageMetadata 객체를 생성했습니다.         
+PageMetadata는 **전체 페이지 수, 현재 페이지 번호, 총 게시판 수**로 구성됩니다.     
+
+___
+
+```java
+        PagedResources<Board> resources = new PagedResources<>(boards.getContent(), pageMetadata);
+```
+PagedResources 객체를 생성합니다.     
+이 객체를 생성하면 HATEOAS가 적용되며 페이징값까지 생성된 REST 형의 데이터를 만들어줍니다.    
+    
+___
+   
+```java
+        resources.add(linkTo(methodOn(BoardRestController.class).getBoards(pageable)).withSelfRel());
+```
+PagedResources 객체 생성 시 따로 링크를 설정하지 않았다면 이와 같이 링크를 추가할 수 있습니다.   
+여기서는 각 Board 마다 상세정보를 불러올 수 있는 링크만 추가했습니다.    
+   
+___
+    
+여기서 중요한 점은 PagedResources 객체를 생성하면 링크를 추가한 RESTful 데이터를 생성한다는 겁니다.   
+이제 HATEOAS를 적용하여 관련 리소스 정보를 추가합니다.   
+만약 게시판과 관련된 페이지의 링크들을 추가한다면 아래와 같이 생성할 수 있습니다.   
+   
+```javascript
+
+"_links": {
+	"first" : {
+		"href": "http://localhost:8081/api/boards?page=0&size=10" 
+	},
+	"selft" : {
+		"href": "http://localhost:8081/api/boards{?page,size,sort,projection} 
+	},
+	"next" : {
+		"href": "http://localhost:8081/api/boards?page=1&size=10" 
+	},
+	"last" : {
+		"href": "http://localhost:8081/api/boards?page=20&size=10" 
+	}
+}
+```
+첫 페이지, 자기 자신의 URL 의 파라미터 정보, 다음 페이지, 마지막 페이지 등과 같이 페이지 처리에 관련된 정보를 키/형식으로 추가할 수 있습니다.      
+필요하면 얼마든지 다른 링크들도 추가할 수 있습니다.        
+만약 클라이언트가 위 키값을 사용하여 게시판 페이지의 로직을 처리했다면            
+관련 URL이 버전업되거나 형식이 바뀌더라도 클라이언트에서 따로 로직을 수정할 필요가 없습니다.        
+따라서 REST의 클라이언트-서버 제약 조건을 명확히 지키게 됩니다.       
+애플리케이션을 구동시켜 REST API에서 페이징 처리된 데이터가 어떻게 보이는지 확인합시다.         
+      
+```javascript
+{
+  "_embedded" : {
+    "boards" : [ {
+      "title" : "게시글1",
+      "subTitle" : "순서1",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.052",
+      "updatedDate" : "2020-08-01T16:15:29.052"
+    }, {
+      "title" : "게시글2",
+      "subTitle" : "순서2",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.057",
+      "updatedDate" : "2020-08-01T16:15:29.057"
+    }, {
+      "title" : "게시글3",
+      "subTitle" : "순서3",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.058",
+      "updatedDate" : "2020-08-01T16:15:29.058"
+    }, {
+      "title" : "게시글4",
+      "subTitle" : "순서4",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.06",
+      "updatedDate" : "2020-08-01T16:15:29.06"
+    }, {
+      "title" : "게시글5",
+      "subTitle" : "순서5",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.061",
+      "updatedDate" : "2020-08-01T16:15:29.061"
+    }, {
+      "title" : "게시글6",
+      "subTitle" : "순서6",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.063",
+      "updatedDate" : "2020-08-01T16:15:29.063"
+    }, {
+      "title" : "게시글7",
+      "subTitle" : "순서7",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.065",
+      "updatedDate" : "2020-08-01T16:15:29.065"
+    }, {
+      "title" : "게시글8",
+      "subTitle" : "순서8",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.066",
+      "updatedDate" : "2020-08-01T16:15:29.066"
+    }, {
+      "title" : "게시글9",
+      "subTitle" : "순서9",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.067",
+      "updatedDate" : "2020-08-01T16:15:29.067"
+    }, {
+      "title" : "게시글10",
+      "subTitle" : "순서10",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-01T16:15:29.069",
+      "updatedDate" : "2020-08-01T16:15:29.069"
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8081/api/boards"
+    }
+  },
+  "page" : {
+    "size" : 10,
+    "totalElements" : 200,
+    "totalPages" : 20,
+    "number" : 0
+  }
+}
+```
+   
+___
+   
+```javascript
+  "_embedded" : {}
+```
+```_embedded```에는 호출한 목적 데이터가 중첩 형식으로 부여되고 있습니다.    
+   
+___
+   
+```javascript
+"_links" : {}
+```  
+```_links```에는 HATEOAS 를 위한 관련 링크들이 있습니다.   
+    
+___  
+   
+```javascript
+  "page" : {}
+```
+```page``` 에서는 페이징 처리를 위한 값들이 제공됩니다.        
+         
+사실 이 부분은 클라이언트 쪽에서 직접 데이터를 내려받아 쓰도록 구현되어 있습니다.            
+앞서 구현하지 못했던 ```생성(POST)```, ```수정(PUT)```, ```삭제(DELETE)```는 어떻게 연동되었는지 살펴보겠습니다.       
+    
+## 3.3. CORS 허용 및 시큐리티 설정   
+기존의 웹 프로젝트와 연동시켜 생성, 수정, 삭제 등의 기능을 구현하기 전에 반드시 설정해야하는 사항들이 있습니다.      
+기존 우리가 생성/수정/삭제를 위해 작성한 스크립트 코드들은 HTTP 요청 시 동일 출처 정책이 적용됩니다.       
+따라서 우리가 설정한 웹의 ```localhost:8080```과 REST API 프로젝트의 ```localhost:8081```은       
+호스트는 동일할지라도 포트가 상이하기 때문에 Ajax 요청은 모두 실패하게 됩니다.        
+      
+**동일 출처 정책**   
+```   
+한 출처에서 로드된 문서나 스크립트가 다른 출처 자원과 상호작용하지 못하도록 제약하는 정책   
+```   
+
+즉, 출처는 ```자원``` + ```도메인``` + ```포트 번호``` 로 결합된 문자열입니다.   
+이 조합에서 한 글자라도 다르면 다른 출처로 판단됩니다.   
+이러한 교차 출처 HTTP 요청을 가능하게 해주는 메커니즘을 CORS - '교차 출처 자원 공유' 라고 합니다.   
+CORS는 서로 다른 도메인의 접근을 허용하는 권한을 부여합니다.      
+  
+예를 들면 ```http://springboot.com```에 허용하는 교차 출처 자원 공유 정책은 다음과 같습니다.   
+```
+http://springboot.com/find/task	-> O 가능 
+http://springboot.com:8080	-> X 포트가 다름 
+https://springboot.com		-> X 프로토콜이 다름 
+http://study.springboot.com	-> X 호스트가 다름  
+```
+   
+___
+   
+스프링 시큐리티를 이용해 쉽게 CORS를 설정할 수 있습니다.     
+다음은 모든 출처에 대해 허용하도록 설정하는 코드입니다.    
+   
+**RestWebApplication - 기존 Application 클래스** 
+```java
+package com.community.rest;
+
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@SpringBootApplication
+public class RestWebApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(RestWebApplication.class, args);
+	}
+
+	@Configuration
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
+	@EnableWebSecurity
+	static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			CorsConfiguration configuration = new CorsConfiguration();
+			configuration.addAllowedOrigin("*");
+			configuration.addAllowedMethod("*");
+			configuration.addAllowedHeader("*");
+			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+			source.registerCorsConfiguration("/**", configuration);
+
+			http.httpBasic()
+					.and().authorizeRequests()
+					//.antMatchers(HttpMethod.POST, "/Boards/**").hasRole("ADMIN")
+					.anyRequest().permitAll()
+					.and().cors().configurationSource(source)
+					.and().csrf().disable();
+		}
+	}
+}
+```
+
+___
+
+```java
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
+```
+```@PreAuthorize``` 와 ```@PostAuthorize```를 사용하기 위해 붙이는 어노테이션입니다.    
+     
+___
+    
+```java
+	@EnableWebSecurity
+```
+웹용 시큐리티를 활성화하는 어노테이션입니다.   
+    
+___   
+    
+```java
+			configuration.addAllowedOrigin("*");
+			configuration.addAllowedMethod("*");
+			configuration.addAllowedHeader("*");
+```
+CorsConfiguration 객체를 생성하여 CORS 에서 Origin,Method,Header 별로 허용할 값을 설정할 수 있습니다.  
+```*```은 ```CorsConfiguration.ALL``` 와 같습니다.  
+모든 경로에 대해서 허용합니다.      
+
+___
+      
+```java
+			source.registerCorsConfiguration("/**", configuration);
+```
+특정 경로에 대해 CorsConfiguration 객체에서 설정한 값을        
+CorsConfigurationSource 인터페이스를 구현한 UrlBasedCorsConfigurationSource 에 적용시킵니다.        
+여기서는 모든 경로로 설정되어 있습니다.    
+   
+___   
+   
+```java
+					.and().cors().configurationSource(source)
+```  
+스프링 시큐리티의 CORS 설정에서는 CorsConfigurationSource 인터페이스의 구현체를 파라미터로 받는 configurationSource가 있습니다.        
+여기에 설정한 UrlBuilBasedCorsConfigurationSource 객체를 넣어주면 위에서 설정한 내용이 시큐리티에 추가됩니다.          
+        
+앞의 설정은 데모 버전이기 때문에 모든 상황과 경로에 대해 허용했지만 실제 서버에서는 상황에 따라 유동적으로 설정해야합니다.       
+이로써 REST API 서버를 활용하여 다른 서버와 AJAX 통신할 준비를 마쳤습니다.       
+    
+## 3.4. 생성,수정,삭제 구현     
+이번에는 커뮤니티 게시판과 직접적인 연동을 통해 더 자세히 알아보겠습니다.       
+REST API 의 컨트롤러에 생성, 수정, 삭제에 사용되는 메소서드 3개만 추가하면 됩니다.   
+
+```java
+
+    @PostMapping
+    public ResponseEntity<?> postBoard(@RequestBody Board board) {
+        //valid 체크
+        board.setCreatedDateNow();
+        boardRepository.save(board);
+        return new ResponseEntity<>("{}", HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{idx}")
+    public ResponseEntity<?> putBoard(@PathVariable("idx")Long idx, @RequestBody Board board) {
+        //valid 체크
+        Board persistBoard = boardRepository.getOne(idx) ;
+        persistBoard.update(board);
+        boardRepository.save(persistBoard);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{idx}")
+    public ResponseEntity<?> deleteBoard(@PathVariable("idx")Long idx) {
+        //valid 체크
+        boardRepository.deleteById(idx);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+```
+
+**BoardRestController**   
+```java
+package com.community.rest.controller;
+
+import com.community.rest.domain.Board;
+import com.community.rest.repository.BoardRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.PagedResources.PageMetadata;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+@RestController
+@RequestMapping("/api/boards")
+public class BoardRestController {
+
+    private BoardRepository boardRepository;
+
+    public BoardRestController(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getBoards(@PageableDefault Pageable pageable) {
+        Page<Board> boards = boardRepository.findAll(pageable);
+        PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boards.getNumber(), boards.getTotalElements());
+        PagedResources<Board> resources = new PagedResources<>(boards.getContent(), pageMetadata);
+        resources.add(linkTo(methodOn(BoardRestController.class).getBoards(pageable)).withSelfRel());
+        return ResponseEntity.ok(resources);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> postBoard(@RequestBody Board board) {
+        //valid 체크
+        board.setCreatedDateNow();
+        boardRepository.save(board);
+        return new ResponseEntity<>("{}", HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{idx}")
+    public ResponseEntity<?> putBoard(@PathVariable("idx")Long idx, @RequestBody Board board) {
+        //valid 체크
+        Board persistBoard = boardRepository.getOne(idx) ;
+        persistBoard.update(board);
+        boardRepository.save(persistBoard);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{idx}")
+    public ResponseEntity<?> deleteBoard(@PathVariable("idx")Long idx) {
+        //valid 체크
+        boardRepository.deleteById(idx);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+}
+```
+    
+___
+   
+```java
+    @PostMapping
+    public ResponseEntity<?> postBoard(@RequestBody Board board) {
+        //valid 체크
+        board.setCreatedDateNow();
+        boardRepository.save(board);
+        return new ResponseEntity<>("{}", HttpStatus.CREATED);
+    }
+```
+POST 요청에 대한 매핑을 지원합니다.
+또한 ```board.setCreatedDateNow();``` 메소드로 서버시간으로 생성된 날짜를 설정합니다.   
+    
+___   
+   
+```java
+    @PutMapping("/{idx}")
+    public ResponseEntity<?> putBoard(@PathVariable("idx")Long idx, @RequestBody Board board) {
+        //valid 체크
+        Board persistBoard = boardRepository.getOne(idx) ;
+        persistBoard.update(board);
+        boardRepository.save(persistBoard);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+```
+PUT 요청에 대한 매핑을 지원합니다.       
+어떤 board 객체를 수정할 것인지 idx 값을 지정해야 매핑됩니다.       
+또한 persistBoard 에 변경된 board의 데이터를 반영합니다.    
+    
+___
+   
+```java
+    @DeleteMapping("/{idx}")
+    public ResponseEntity<?> deleteBoard(@PathVariable("idx")Long idx) {
+        //valid 체크
+        boardRepository.deleteById(idx);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+```
+DELETE 요청에 대한 매핑을 지원합니다.      
+어떤 board 객체를 삭제할 것인지 idx 값을 지정해야 매핑됩니다.      
+   
+___  
+   
+생성, 수정, 삭제를 위한 코드는 이렇게 기술해주면 됩니다.           
+컨트롤러에 설정되어 있는 ```@RequestMapping("/api/boards)```로 명사는 일시켰고 생성, 수정, 삭제하는 동사만 달리했습니다.               
+물론 정상적인 데이터가 넘어왔는지에 대한 유효성 검사를 하면 코드가 더 길어지지만 핵심 기능은 위 코드에 모두 담겨 있습니다.              
+       
+Board의 상태 데이터를 수정하는 부분을 위해 Board 클래스에 추가적인 작업이 필요합니다.            
+Board 클래스에 ```setCreatedDateNow()``` 메서드와 ```update()``` 메서드를 생성해야합니다.              
+```setCreatedDateNow()``` 메서드는 현재 시간을 LocalDateTime 을 통해 생성하고, ```update()``` 메서드는 수정되는 부분들을 매칭시켜 변경해줍니다.          
+      
+```java
+    public void setCreatedDateNow() {
+        this.createdDate = LocalDateTime.now();
+    }
+    
+    public void setUpdateDateNow() {
+        this.updatedDate = LocalDateTime.now();
+    }
+
+    public void update(Board board) {
+        this.title = board.getTitle();
+        this.subTitle = board.getSubTitle();
+        this.content = board.getContent();
+        this.boardType = board.getBoardType();
+        this.updatedDate = LocalDateTime.now();
+    }
+```
+     
+**Board**       
+```java
+package com.community.rest.domain;
+
+
+import com.community.rest.domain.enums.BoardType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+/**
+ * Created by KimYJ on 2017-07-12.
+ */
+@Getter
+@NoArgsConstructor
+@Entity
+@Table
+public class Board implements Serializable {
+
+    @Id
+    @Column
+    @GeneratedValue
+    private Long idx;
+
+    @Column
+    private String title;
+
+    @Column
+    private String subTitle;
+
+    @Column
+    private String content;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private BoardType boardType;
+
+    @Column
+    private LocalDateTime createdDate;
+
+    @Column
+    private LocalDateTime updatedDate;
+
+    @OneToOne
+    private User user;
+
+    @Builder
+    public Board(String title, String subTitle, String content, BoardType boardType, LocalDateTime createdDate, LocalDateTime updatedDate, User user) {
+        this.title = title;
+        this.subTitle = subTitle;
+        this.content = content;
+        this.boardType = boardType;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.user = user;
+    }
+
+    public void setCreatedDateNow() {
+        this.createdDate = LocalDateTime.now();
+    }
+    
+    public void setUpdateDateNow() {
+        this.updatedDate = LocalDateTime.now();
+    }
+
+    public void update(Board board) {
+        this.title = board.getTitle();
+        this.subTitle = board.getSubTitle();
+        this.content = board.getContent();
+        this.boardType = board.getBoardType();
+        this.updatedDate = LocalDateTime.now();
+    }
+}
+```
+    
+## 3.5. 동작 확인   
+REST API도 생성, 수정, 삭제에 대한 준비가 되었으니,            
+REST API와 커뮤니티 게시판 모두를 실행하여 추가된 기능이 정상동작 하는지 확인합시다.           
+API는 8081번 포트로, 커뮤니티 게시판은 8080포트로 실행됩니다.     
+
+***
+# 4. 스프링 부트 데이터 레스트로 REST API 구현하기        
+기존 3절에서는 '스프링 부트 MVC 패턴으로 REST API 구현하기' 이므로 Controller 를 사용했습니다.              
+MVC 패턴을 이용해 컨트롤러와 서비스 영역을 두면 세부적인 처리가 가능하고 복잡한 서비스도 처리할 수 있습니다.         
+**하지만** 복잡한 로직 없이 단순 요청을 받아 데이터를 있는 그대로 반환할 때는 비용 낭비가 될 수 있습니다.         
+   
+'스프링 부트 데이터 레스트'는 이러한 단점을 보완한 방법으로서, MVC 패턴에서 VC를 생략했습니다.          
+즉, 도메인과 리포지토리로만 REST API를 제공하기 때문에 빠르고 쉽게 프로젝트를 진행할 수 있습니다.          
+
+1. 스프링 부트 데이터 레스트로 REST API 구현하기    
+2. ```@RepositoryRestController``` 를 사용해서 REST API 구현하기   
+3. 프로젝트, 롤, 이벤트 바인딩 등 세부적인 설정 처리      
+4. HAL 브라우저 적용하기     
+
+## 4.1. 준비하기          
+본격적으로 스프링 부트 데이터 레스트를 시작하기 전에 DB와 REST API 환경 설정을 진행하겠습니다.    
+기존 REST 프로젝트의 data-rest 모듈을 이용하여 구현해보겠습니다.    
+
+**data-rest 의 application.yml**
+```
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/{DB 명}
+    username: 아이디 
+    password: 비번
+    driver-class-name: com.mysql.jdbc.Driver
+  data:
+    rest:
+      base-path: /api
+      default-page-size: 10
+      max-page-size: 10
+server:
+  port: 8081
+```
+* **spring.data.rest.base-path :**   
+API 의 모든 요청의 기본 경로를 지정합니다.   
+* **spring.data.rest.default-page-size :**    
+클라이언트가 따로 페이지 크기를 요청하지 않았을 때 적용할 기본 페이지 크기를 설정  
+* **spring.data.rest.max-page-size :**    
+최대 페이지 수를 설정합니다.    
+   
+스프링 부트 데이터 레스트는 위 설정들 말고도 다음과 같은 프로퍼티 설정도 가능합니다.   
+```properties	
+page-param-name			: 페이지를 선택하는 쿼리 파라미터명을 변경합니다.       
+limit-param-name		: 패이지 아이템 수를 나타내는 쿼리 파라미터명을 변경합니다.     
+sort-param-name			: 패이지의 정렬값을 나타내는 쿼리 파라미터명을 변경합니다.      
+default-media-type		: 미디어 타입을 지정하지 않았을 때 사용할 기본 미디어 타입을 설정합니다.   
+return-body-on-create		: 새로운 엔티티를 생성한 이후에 응답 바디 반환 여부를 설정합니다.  
+return-body-on-update		: 엔티티를 수정한 이후에 응답 바디 반환 여부를 설정합니다.   
+enable-enum-translation		: rest-messages 라는 프로퍼티 파일을 만들어서 지정한 enum 값을 사용하게 해줍니다.   
+				  적합한 enum 값(DEFAULT/ALL/VISIBILITY/ANNOTATION 을 키로 사용)
+detection-strategy		: 리포지토리 노출 전략을 설정하는 프로퍼티값입니다.     
+				  RepositoryDetectionStrategy 인터페이스 내부에 구현된 enum 값으로 설정합니다.     
+```
+
+## 4.2. 기본 노출 전략 살펴보기     
+스프링 부트 데이터 레스트에서 제공하는 프로퍼티 중 ```detection-strategy```에 RepositoryDetectionStrategy를 사용하여      
+리포지토리의 REST 리소스 노출 여부를 설정할 수 있습니다.    
+RepositoryDetectionStrategy 에 주어진 enum 값은 다음과 같습니다.     
+    
+* ALL : 모든 유형의 리포지토리를 노출합니다.     
+* DEFAULT : public 으로 설정된 모든 리포지토리를 노출합니다.      
+여기서 ```@(Repository)RestResource``` 가 ```exported```로 설정된 flag 값이 고려되어 노출됩니다.        
+* ANNOTATION : ```@(Repository)RestResource```가 설정된 리포지토리만 노출합니다.             
+여기서 ```@(Repository)RestResource```가 ```exported```로 설정된 flag 값이 false가 아니어야 합니다.           
+* VISIBILITY : public 으로 설정된 인터페이스만 노출합니다.      
+     
+## 4.3. 스프링 부트 데이터 레스트로 REST API 구현하기     
+도메인 클래스는 앞서 작성했던 코드를 동일하게 사용하겠습니다.     
+repository 는 이전에 생성했던 일반적인 JpaRepository와 비슷한 역할을 합니다.      
+차이점은 ```@RepositoryRestResource```를 이용한다는 점인데     
+```@RepositoryRestResource``` 는 스프링 부트 데이터 레스트에서 지원하는 어노테이션으로       
+별도의 컨트롤러와 서비스 영역 없이 미리 내부적으로 정의되어 있는 로직을 따라 처리합니다.      
+그 로직은 해당 도메인의 정보를 매핑하여 REST API를 제공하는 역할을 합니다.      
+     
+**BoardRepository**    
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.Board;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource
+public interface BoardRepository extends JpaRepository<Board, Long> {
+}
+```  
+UserRepository 도 동일하게 ```@RepositoryRestResource``` 어노테이션을 사용하여 User 도메인의 REST API를 생성하도록 합시다.        
+    
+**UserRepository**
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+```  
+설정이 끝났습니다. 프로퍼티를 설정하고, 도메인과 리포지토리만 구현하면 다른 영역은 스프링 부트 데이터 레스트가 알아서 처리해줍니다.    
+그럼 브라우저에서 URL로 접속하여 결과가 어떻게 출력되는지 살펴보겠습니다.       
+아래 명령을 터미널에서 실행합니다.        
+혹은 curl 명령어를 제외하고 URL 브라우저에서 접속해도 결과를 확인할 수 있습니다.        
+
+```javascript
+
+```
+**이 부분이 내가 절차를 안따라가서 문제가 생긴 것 같다 나중에 다시 확인해보자**        
+
+호출해보니 HATEOAS 를 지키면 MVC 패턴을 활용한 방법의 rest-web 보다 더 많은 링크 정보를 제공하고 있습니다.   
+boards 키의 내부 ```"_links"```는 해당 Board와 관련된 링크 정보를 포함합니다.   
+외부 ```"_links"```는 Board의 페이징 처리와 관련된 링크 정보를 포함합니다.     
+링크를 살펴보면 관련된 데이터를 어떻게 호출해야 할지 힌트를 얻을 수 있습니다.     
+    
+내부 링크는 해당 Board에 대한 URI, 프로젝션을 통한 Board 호출 URI, 해당 Board를 작성한 User의 URI 까지 알려줍니다.    
+외부 링크는 게시판의 첫 번째 리스트 ```URI("first")```,          
+자기 자신의 ```URI("self")```, 다음 페이지, 마지막 페이지, 프로파일 정보 등 관련 정보를 쉽게 파악할 수 있습니다.     
+   
+이러한 정보는 키값```({key:value})``` 형식으로 구성되어 있어서        
+클라이언트가 키를 참조하도록 코드를 설정한다면 서버에서 요청된 데이터의 정보가 바뀌더라도 클라이언트 입장에서는 코드를 수정할 필요가 없습니다.         
+   
+만약 클라이언트가 URL 을 직접 호출하여 가져온다면 코드를 
+```http://localhost:8081/api/boards?page=0&size=20```과 같이 수정해야 합니다.        
+하지만 클라이언트가 ```"_links"``` 의 ```"first"``` 값을 참조하고 있었다면        
+서버에서 제공하는 대로 값을 받아오기 때문에 따로 수정할 필요가 없습니다.         
+
+## 4.4. @RepositoryRestController 를 사용하여 REST API 구현하기   
+스프링 부트 데이터 레스트의 기본 설정을 사용해서 편리하게 정보를 구성했지만 모든 사람이 위와 같은 데이터형을 원하지는 않을 겁니다.     
+또는 좀 더 최적화하고 싶은 사람도 있을 겁니다.       
+이럴 때는 스프링 부트 데이터 레스트에서 따로 제공해주는 ```@RepositoryRestController``` 어노테이션을 이용하면 좋습니다.      
+이는 ```@RestContoller```를 대체하는 용도로 사용하며 두 가지 주의사항이 있습니다.       
+        
+1. 매핑하는 URL 형식이 스프링 부트 데이터 레스트에서 정의하는 REST API 형식에 맞아야 한다.      
+2. 기존에 기본으로 제공하는 URL 형식과 같게 제공해야 해당 컨트롤러의 메서드가 기존의 기본 API를 오버라이드한다.      
+
+앞선 결과의 데이터에서 boards 내부 객체들의 링크값을 제외하고 결괏값을 출력합시다.       
+        
+**BoardRestController**
+```java
+package com.community.rest.controller;
+
+import com.community.rest.domain.Board;
+import com.community.rest.repository.BoardRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.PagedResources.PageMetadata;
+import org.springframework.hateoas.Resources;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+@RepositoryRestController
+public class BoardRestController {
+
+    private BoardRepository boardRepository;
+
+    public BoardRestController(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
+    }
+
+    //url 규칙이 맞아야 리퀘스트가 들어옴
+    @GetMapping("/boards/search/addTest")
+    public @ResponseBody ResponseEntity<?> basicTest() {
+        List<Board> boardList = boardRepository.findAll();
+
+        Resources<Board> resources = new Resources<>(boardList);
+        resources.add(linkTo(methodOn(BoardRestController.class).basicTest()).withSelfRel());
+        return ResponseEntity.ok(resources);
+    }
+
+    //오버라이드
+    @GetMapping("/boards")
+    public @ResponseBody Resources<Board> simpleBoard(@PageableDefault Pageable pageable) {
+        Page<Board> boardList = boardRepository.findAll(pageable);
+
+        PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boardList.getNumber(), boardList.getTotalElements());
+        PagedResources<Board> resources = new PagedResources<>(boardList.getContent(), pageMetadata);
+        resources.add(linkTo(methodOn(BoardRestController.class).simpleBoard(pageable)).withSelfRel());
+        return resources;
+    }
+}
+
+```
+```java
+@GetMapping("/boards")
+```
+```/api/boards```로 스프링 부트 데이터 레스트에서 기본적으로 제공해주는 URL 형식을 오버라이드합니다.   
+    
+___
+   
+```java
+        PageMetadata pageMetadata = new PageMetadata(pageable.getPageSize(), boardList.getNumber(), boardList.getTotalElements());
+```
+전체 페이지 수, 현재 페이지 번호, 총 게시판 수 등의 페이지 정보를 담는 PageMetadata 객체를 생성합니다.   
+    
+___   
+   
+```java
+        PagedResources<Board> resources = new PagedResources<>(boardList.getContent(), pageMetadata);
+```
+컬렉션의 페이지 리소스 정보를 추가적을 제공해주는 PagedResources 객체를 만들어 반환값으로 사용합니다.    
+    
+___   
+   
+```java
+        resources.add(linkTo(methodOn(BoardRestController.class).simpleBoard(pageable)).withSelfRel());
+```
+필요한 링크를 추가합니다.  
+사실 여러 링크를 추가하는 것은 상당히 반복적인 작업입니다.     
+예제에서는 요청된 각각의 Board를 나타내는 ```self```하나만 임시로 추가하겠습니다.   
+
+```javascript
+gim-ujae@gim-ujaeui-MacBookPro boot-rest % curl http://localhost:8081/api/boards
+{
+  "_embedded" : {
+    "boards" : [ {
+      "title" : "게시글1",
+      "subTitle" : "순서1",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.038",
+      "updatedDate" : "2020-08-03T17:45:07.039"
+    }, {
+      "title" : "게시글2",
+      "subTitle" : "순서2",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.042",
+      "updatedDate" : "2020-08-03T17:45:07.042"
+    }, {
+      "title" : "게시글3",
+      "subTitle" : "순서3",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.044",
+      "updatedDate" : "2020-08-03T17:45:07.044"
+    }, {
+      "title" : "게시글4",
+      "subTitle" : "순서4",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.045",
+      "updatedDate" : "2020-08-03T17:45:07.045"
+    }, {
+      "title" : "게시글5",
+      "subTitle" : "순서5",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.046",
+      "updatedDate" : "2020-08-03T17:45:07.046"
+    }, {
+      "title" : "게시글6",
+      "subTitle" : "순서6",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.048",
+      "updatedDate" : "2020-08-03T17:45:07.048"
+    }, {
+      "title" : "게시글7",
+      "subTitle" : "순서7",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.05",
+      "updatedDate" : "2020-08-03T17:45:07.05"
+    }, {
+      "title" : "게시글8",
+      "subTitle" : "순서8",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.051",
+      "updatedDate" : "2020-08-03T17:45:07.051"
+    }, {
+      "title" : "게시글9",
+      "subTitle" : "순서9",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.052",
+      "updatedDate" : "2020-08-03T17:45:07.052"
+    }, {
+      "title" : "게시글10",
+      "subTitle" : "순서10",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-03T17:45:07.054",
+      "updatedDate" : "2020-08-03T17:45:07.054"
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8081/api/boards"
+    }
+  },
+  "page" : {
+    "size" : 10,
+    "totalElements" : 200,
+    "totalPages" : 20,
+    "number" : 0
+  }
+}
+```
+결과를 보면 기존에 제공해주던 여러 링크가 삭제된 것을 알 수 있습니다.      
+위 코드를 통해 우리는 몇가지 사실을 알 수 있습니다.        
+     
+* 스프링 부트 데이터 레스트에서 제공해주는 기본 URL은 ```@RepositoryRestController```를 사용하여 오버라이드 가능합니다.      
+* 코드로 모든 링크를 추가하는 일은 굉장히 번거롭습니다.        
+스프링 부트 데이터 레스트는 이러한 반복 작업을 일괄적으로 제공해주기 때문에 링크를 추가하는 코드를 구현할 필요가 없습니다.       
+   
+## 4.5. 생성, 수정, 삭제 연동 테스트   
+지금까지 만든 게시판을 테스트해보겠습니다.   
+스프링 데이터 부트 레스트를 사용하면 출력결과를 손쉽게 확인할 수 있습니다.    
+먼저 Application 클래스에서 CORS 허용에서 설정한 8080번 포트로 웹 서버를 동작시켜 REST API를 호출하는 방식으로 테스트하고,   
+다음으로 스프링 부트 레스트로 테스트합니다.      
+
+우선 ```[data-rest]``` 모듈에 존재하는 Application 클래스를 ```[web-rest]```의 Application 클래스와 동일하게 만들어줍니다.           
+이후에는 CORS가 적용되었으니 생성, 수정, 삭제 테스트를 진행하겠습니다.      
+이미 코드 작성과 설정은 모두 했기 때문에 ```[data-rest]``` 모듈만 실행하여 동일하게 테스트해봅니다.      
+
+웹과 REST API 서버를 모두 띄우고 테스트를 해보면 기존과 동일한 결과를 얻을 수 있을겁니다.   
+
+**결과**
+```javascript
+{
+  "_embedded" : {
+    "boards" : [ {
+      "title" : "게시글1",
+      "subTitle" : "순서1",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.203",
+      "updatedDate" : "2020-08-07T20:42:42.203"
+    }, {
+      "title" : "게시글2",
+      "subTitle" : "순서2",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.207",
+      "updatedDate" : "2020-08-07T20:42:42.207"
+    }, {
+      "title" : "게시글3",
+      "subTitle" : "순서3",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.21",
+      "updatedDate" : "2020-08-07T20:42:42.21"
+    }, {
+      "title" : "게시글4",
+      "subTitle" : "순서4",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.216",
+      "updatedDate" : "2020-08-07T20:42:42.216"
+    }, {
+      "title" : "게시글5",
+      "subTitle" : "순서5",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.227",
+      "updatedDate" : "2020-08-07T20:42:42.227"
+    }, {
+      "title" : "게시글6",
+      "subTitle" : "순서6",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.228",
+      "updatedDate" : "2020-08-07T20:42:42.228"
+    }, {
+      "title" : "게시글7",
+      "subTitle" : "순서7",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.233",
+      "updatedDate" : "2020-08-07T20:42:42.233"
+    }, {
+      "title" : "게시글8",
+      "subTitle" : "순서8",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.236",
+      "updatedDate" : "2020-08-07T20:42:42.236"
+    }, {
+      "title" : "게시글9",
+      "subTitle" : "순서9",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.237",
+      "updatedDate" : "2020-08-07T20:42:42.237"
+    }, {
+      "title" : "게시글10",
+      "subTitle" : "순서10",
+      "content" : "콘텐츠",
+      "boardType" : "free",
+      "createdDate" : "2020-08-07T20:42:42.239",
+      "updatedDate" : "2020-08-07T20:42:42.239"
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8081/api/boards"
+    }
+  },
+  "page" : {
+    "size" : 10,
+    "totalElements" : 200,
+    "totalPages" : 20,
+    "number" : 0
+  }
+}
+```
+   
+## 4.6. 프로젝션으로 노출 필드 제한하기   
+생성, 수정, 삭제 구현을 완료했습니다.       
+그런데 GET으로 데이터를 가져올 때 항상 모든 값을 가져와야 할까요? 아닙니다.       
+특히 사용자 개인정보처럼 민감한 데이터를 다룰 때는 한정된 값만 사용하도록 제한을 걸어야 됩니다.        
+지금 이 상태로 User 데이터를 요청하면 다음과 같이 모든 필드를 조회하여 가져옵니다.          
+   
+```
+curl http://localhost:8081/api/users/1
+```
+
+**결과**
+```javascript
+gim-ujae@gim-ujaeui-MacBookPro boot-rest % curl http://localhost:8081/api/users/1
+{
+  "name" : "havi",
+  "password" : "test",
+  "email" : "havi@gmail.com",
+  "pincipal" : null,
+  "socialType" : null,
+  "createdDate" : "2020-08-07T20:42:42.057",
+  "updatedDate" : null,
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8081/api/users/1"
+    },
+    "user" : {
+      "href" : "http://localhost:8081/api/users/1"
+    }
+  }
+}
+```  
+스프링 부트 데이터 레스트는 반환값을 제어하는 3가지 방법을 제공합니다.    
+    
+1. 도메인 필드에 ```@JsonIgnore```를 추가       
+2. ```@Projection```을 사용      
+3. 프로젝션을 수동으로 등록     
+      
+___
+   
+```@JsonIgnore```를 추가하는 방법은 가장 간단한 방법입니다.   
+User 도메인에 ```@JsonIgnore``` 어노테이션을 사용하면 해당 필드가 반환값에 포함되지 않습니다.    
+User 도메인의 경우 아래 코드와 같이 password 필드에 사용하면 적절하겠습니다.   
+
+**User 일부**   
+```java  
+    @Column
+    @JsonIgnore
+    private String password;
+```
+
+**결과**
+```javascript
+gim-ujae@gim-ujaeui-MacBookPro boot-rest % curl http://localhost:8081/api/users/1
+{
+  "name" : "havi",
+  "email" : "havi@gmail.com",
+  "pincipal" : null,
+  "socialType" : null,
+  "createdDate" : "2020-08-07T20:58:57.348",
+  "updatedDate" : null,
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8081/api/users/1"
+    },
+    "user" : {
+      "href" : "http://localhost:8081/api/users/1"
+    }
+  }
+}
+```
+    
+___
+      
+상황에 따라 유동적으로 설정하고 싶은 필드가 있을 겁니다.                      
+```@Projection```을 사용하는 두 번째 방법은 이러한 상황에 적합합니다.                    
+프로젝션을 설정하여 원하는 필드만 제한할 수 있습니다.                    
+프로젝션은 사용자에게 제공되는 정보를 줄일 수도 있고 반대로 제공하지 않던 데이터를 가져올 수도 있습니다.                     
+다음과 같은 사항에 유의해서 사용해야 합니다.              
+            
+* 프로젝션 인터페이스 생성 시 반드시 해당 도메인 클래스와 같은 패키지 경로 또는 하위 패키지 경로에 설정해야 합니다.        
+* ```@RepositoryRestResource``` 어노테이션의 ```excerptProjection``` 프로퍼티로 관리되는 리소스 참조는 단일 참조 시 적용되지 않습니다.     
+       
+첫 번째 주의사항은 라이브러리 내의 코드 구현이기 때문에 강제되는 규칙입니다.       
+두 번째 주의사항은 지금 당장은 이해가 쉽지 않을 겁니다.         
+예제를 구현해 결괏값을 살펴보며 자세히 설명하겠습니다.            
+그럼 직접 프로젝션을 적용시켜보겠습니다.      
+      
+도메인 하위 경로에 프로젝션 패키지를 생성하고 원하는 노출 필드가 지정된 인터페이스를 하나 생성합니다.       
+여기에서는 User의 이름만 제공하는 ```UserOnlyContainName``` 인터페이스를 생성할 겁니다.       
+```UserOnlyContainName``` 인터페이스에 ```@Projection``` 어노테이션을 붙여주면 프로젝션 설정 인터페이스가 완성됩니다.       
+   
+* ```data-rest/src/main/java/com/community/rest/domain/projection/```에서 ```UserOnlyContainName``` 인터페이스 생성      
+   
+**UserOnlyContainName**
+```java
+package com.community.rest.domain.projection;
+
+import com.community.rest.domain.User;
+import org.springframework.data.rest.core.config.Projection;
+
+@Projection(name = "getOnlyName", types = {User.class})
+public interface UserOnlyContainName {
+    String getName();
+}
+```
+     
+예제에서 ```@Projection```의 프로퍼티 값으로 제공되는 ```name``` 은 해당 프로젝션을 사용하기 위한 키값을 지정합니다.      
+```types```는 해당 프로젝션이 어던 도메인에 바인딩 될지 나타냅니다.           
+   
+___
+   
+생성할 프로젝션을 ```UserRepository``` 에 적용합니다.   
+```excerptProjection``` 파라미터값에 생성한 프로젝션 클래스를 넣어주면 됩니다.   
+
+**UserRepository**
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.User;
+
+import com.community.rest.domain.projection.UserOnlyContainName;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+
+@RepositoryRestResource(excerptProjection = UserOnlyContainName.class)
+public interface UserRepository extends JpaRepository<User, Long> {
+}
+```
+위 코드에 대해서 간단히 설명하자면 해당 필드만 출력하겠다는 뜻입니다.         
+즉, ```name``` 필드만 출력할 것입니다.       
+     
+**결과**
+```javascript
+gim-ujae@gim-ujaeui-MacBookPro boot-rest % curl http://localhost:8081/api/users   
+{
+  "_embedded" : {
+    "users" : [ {
+      "name" : "havi",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8081/api/users/1"
+        },
+        "user" : {
+          "href" : "http://localhost:8081/api/users/1{?projection}",
+          "templated" : true
+        }
+      }
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8081/api/users{?page,size,sort,projection}",
+      "templated" : true
+    },
+    "profile" : {
+      "href" : "http://localhost:8081/api/profile/users"
+    }
+  },
+  "page" : {
+    "size" : 10,
+    "totalElements" : 1,
+    "totalPages" : 1,
+    "number" : 0
+  }
+}
+```   
+결과 데이터를 보면 이름과 링크만 노출되었습니다.          
+그렇다면 ```http://localhost:8081/api/uesrs/1```로 한 User의 객체를 조회하면 어떻게 될까요?                  
+아이러니 하게도 User의 데이터에 name만 포함되는 결과가 아닌 User의 모든 정보가 노출됩니다.                   
+```@RepositoryRestResource``` 어노테이션의 ```excerptProjection```으로 관리되는 리소스 참조는 단일 참조 시 적용되지 않았습니다.           
+즉, ```/api/users``` 요청에는 적용되지만 ```/api/users/1```에는 적용이 되지 않습니다.            
+이는 앞서 설명했던 단일 참조는 적용되지 않는다는 주의사항에 해당합니다.               
+           
+___
+      
+아울러 ```/api/users/1```에도 프로젝션 적용을 원하는 경우에 대한 대책이 존재합니다.                      
+```./api/users/1?projection=getOnlyName```을 적용하면 됩니다.                     
+또는 ```@JsonIgnore```를 사용하여 특정 필드를 막은 후 상황에 따라 사용할 수 있게 ```@Projection```으로 참조를 허용할 수도 있습니다.                
+하지만 이런 방식은 데이터가 복잡할수록 실수할 여지가 커집니다.                      
+따라서 추천하지는 않습니다.                 
+다른 대책으로 특정 경로에 따라 반환할 데이터가 명확한 방법인 ```@RepositoryRestController``` 를 사용하는 것을 추천합니다.                  
+    
+두 번째 ```excerptProjection```을 설정하지 않고 수동으로 프로젝션을 등록하는 방법입니다.                     
+단, 수동 등록 시에는 반드시 프로젝션 타깃이 될 도메인과 동일하거나 하위에 있는 패키지 경로로 들어가야 합니다.            
+         
+다음과 같이 ```RepositoryRestCofigurationAdapter``` 클래스를 상속받아            
+```configureRepositoryRestConfiguration``` 메서드를 오버라이드하여 프로젝션을 등록할 수 있습니다.          
+이 방법은 참고용으로만 알아두세요             
+       
+* ```data-rest/src/main/java/com/community/rest/domain/projection/```에서 ```CustomizedRestMvcConfiguration``` 클래스 생성        
+     
+**CustomizedRestMvcConfiguration**   
+```java
+package com.community.rest.domain.projection;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
+
+@Configuration
+public class CustomizedRestMvcConfiguration extends RepositoryRestConfigurerAdapter {
+
+    @Override
+    public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+        config.getProjectionConfiguration().addProjection(UserOnlyContainName.class);
+    }
+}
+```
+   
+## 4.7. 각 메서드 권한 제한  
+실제 서비스에서는 사용자에 따라 다른 권한을 부여해야 합니다.     
+스프링 부트 데이터 레스트 프로젝트는 스프링 시큐리티와의 호환을 통해 이 문제를 해결할 수 있습니다.        
+   
+시큐리티 설정에서 추가했던    
+```@EnableGlobalMethodSecurity(securedEnabled=true,prePostEnabled=true)``` 어노테이션을 이용하면 
+권한을 관리할 수 있습니다.      
+여기에 ```securedEnabled```와 ```prePostEnabled``` 를 **true**로 설정하면 
+```@Secured```와 ```@PreAuthorize``` 어노테이션을 사용할 수 있습니다.    
+    
+* ```@Secured``` : 가장 기본적으로 사용하는 어노테이션으로 순수하게 롤(ROLE_) 기반으로 접근을 제한한다.        
+대신 ```@Secured```는 권한 지정에 있어서 유연성이 떨어집니다.         
+     
+* ```@PreAuthorize``` : ```@Secured```의 권한 지정 외에도 EL태그를 사용하여 유연한 관리가 가능하다.      
+```@PreAuthorize```는 메서드 레벨과 리포지토리 레벨 모두 사용할 수 있지만 2가지를 혼합해 사용하는 방법은 추천하지 않는다.  
+     
+___
+   
+```@PreAuthorize```를 사용하여 ROLE_ADMIN 권한을 갖고 있어야만 Board를 저장할 수 있게끔 예제를 구현해보자   
+
+* ```data-rest/src/main/java/com/community/rest/domain/projection/```에서 BoardOnlyContainTitle 인터페이스 생성   
+   
+**BoardOnlyContainTitle**
+```java
+package com.community.rest.domain.projection;
+
+import com.community.rest.domain.Board;
+import org.springframework.data.rest.core.config.Projection;
+
+@Projection(name = "getOnlyTitle", types = {Board.class})
+public interface BoardOnlyContainTitle {
+    String getTitle();
+}
+```
+
+* ```data-rest/src/main/java/com/community/rest/repository/``` BoardRepository 수정하기   
+
+**BoardRepository**
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.Board;
+
+import com.community.rest.domain.projection.BoardOnlyContainTitle;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+
+@RepositoryRestResource(excerptProjection = BoardOnlyContainTitle.class)
+public interface BoardRepository extends JpaRepository<Board, Long> {
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    <S extends Board> S save(S entity);
+}
+```    
+JpaRepository 인터페이스에서 상속받는 메서드를 오버라이드하여 권한을 지정했습니다.       
+이제 위 같은 설정이 잘 동작하는지 테스트를 진행해보겠습니다.        
+시큐리티 설정에 임시로 ADMIN 권한을 갖는 User를 생성하겠습니다.       
+   
+프로젝트의 Application 클래스를 아래와 같은 코드로 수정합시다.   
+
+
+**Application**
+```java
+package com.community.rest;
+
+
+import com.community.rest.domain.Board;
+import com.community.rest.domain.enums.BoardType;
+import com.community.rest.repository.BoardRepository;
+import com.community.rest.repository.UserRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
+@SpringBootApplication
+public class DataRestApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DataRestApplication.class, args);
+	}
+	@Bean
+	public CommandLineRunner runner(UserRepository userRepository, BoardRepository boardRepository)
+			throws Exception {
+		return (args) -> {
+			com.community.rest.domain.User user = userRepository.save(com.community.rest.domain.User.builder()
+					.name("havi")
+					.password("test")
+					.email("havi@gmail.com")
+					.createdDate(LocalDateTime.now())
+					.build()
+			);
+
+			IntStream.rangeClosed(1, 200).forEach(index -> {
+				boardRepository.save(Board.builder()
+						.title("게시글" + index)
+						.subTitle("순서" + index)
+						.content("콘텐츠")
+						.boardType(BoardType.free)
+						.createdDate(LocalDateTime.now())
+						.updatedDate(LocalDateTime.now())
+						.user(user)
+						.build());
+			});
+
+		};
+	}
+
+	@Configuration
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
+	@EnableWebSecurity
+	static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+		@Bean
+		InMemoryUserDetailsManager userDetailsManager() {
+			User.UserBuilder commonUser = User.withUsername("commonUser");
+			User.UserBuilder havi = User.withUsername("havi");
+
+			List<UserDetails> userDetailsList = new ArrayList<>();
+			userDetailsList.add(commonUser.password("{noop}common").roles("USER").build());
+			userDetailsList.add(havi.password("{noop}test").roles("USER", "ADMIN").build());
+
+			return new InMemoryUserDetailsManager(userDetailsList);
+		}
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			CorsConfiguration configuration = new CorsConfiguration();
+			configuration.addAllowedOrigin("*");
+			configuration.addAllowedMethod("*");
+			configuration.addAllowedHeader("*");
+			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+			source.registerCorsConfiguration("/**", configuration);
+
+			http.httpBasic()
+					.and().authorizeRequests()
+					//.antMatchers(HttpMethod.POST, "/Boards/**").hasRole("ADMIN")
+					.anyRequest().permitAll()
+					.and().cors().configurationSource(source)
+					.and().csrf().disable();
+		}
+	}
+
+}
+```
+
+```java
+	@Configuration
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
+	@EnableWebSecurity
+	static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+		@Bean
+		InMemoryUserDetailsManager userDetailsManager() {
+			User.UserBuilder commonUser = User.withUsername("commonUser");
+			User.UserBuilder havi = User.withUsername("havi");
+
+			List<UserDetails> userDetailsList = new ArrayList<>();
+			userDetailsList.add(commonUser.password("{noop}common").roles("USER").build());
+			userDetailsList.add(havi.password("{noop}test").roles("USER", "ADMIN").build());
+
+			return new InMemoryUserDetailsManager(userDetailsList);
+		}
+```
+```java
+		InMemoryUserDetailsManager userDetailsManager() {
+```
+인메모리 방식으로 User 정보를 관리해주는 InMemoryUserDetailsManager를 선언합니다.        
+인메모리 방식은 애플리케이션이 실행될 때 메모리에서 User 정보를 관리하도록 하는 방식입니다.        
+만약 User에 관한 정보를 애플리케이션 실행중에 수정하면 애플리케이션이 셧다운될 때 수정했던 정보가 사라집니다.        
+   
+___
+   
+```java
+			List<UserDetails> userDetailsList = new ArrayList<>(); // UserDeatils 는 시큐리티의 클래스이다.   
+			userDetailsList.add(commonUser.password("{noop}common").roles("USER").build());
+			userDetailsList.add(havi.password("{noop}test").roles("USER", "ADMIN").build());
+
+```
+**우선 여기서 나오는 User는 우리가 정의한 User가 아니라 org.springframework.security.core.userdetails.User 입니다**   
+
+```InMemoryDeatilsManager``` 생성시 필요한 User 목록을 생성합니다.   
+일반 User인 commonUser를 생성하고, 직접 테스트할 User인 havi도 생성하여 두 User에 각각 USER, ADMIN 권한을 부여합니다.     
+스프링 시큐리티에서 제공하는 ```UserBuilder```를 사용하면 간편하게 User를 생성할 수 있습니다.   
+스프링 부트 2.0 부터는 암호화 인코딩 방식을 지정해야 합니다.   
+예를 들어 sha256 방식은 ```{sha256}``` 과 같이 지정해야 합니다.   
+예제에서는 인코딩 방식을 지정하지 않기 위해 ```{noop}```으로 표기했습니다.   
+마지막으로는 ```UserBuilder```를 사용했으므로 ```build()``` 메서드로 User를 만들 수 있습니다.
+   
+___
+    
+REST API 서버에서 테스트 환경이 모두 갖쳐졌습니다.    
+curl 명령을 통해 테스트할 수 있지만 우리가 만든 게시판 프로젝트를 사용해서 테스트를 진행해보겠습닙다.   
+   
+웹 프로젝트의 form.html 의 Ajax 요청 코드를 아래와 같이 수정합니다.     
+    
+**form.html**
+```javascript
+    <script th:if="!${board?.idx}">
+        $('#insert').click(function () {
+            var jsonData = JSON.stringify({
+                title: $('#board_title').val(),
+                subTitle: $('#board_sub_title').val(),
+                content: $('#board_content').val(),
+                boardType: $('#board_type option:selected').val()
+            });
+            $.ajax({
+                       url: "http://localhost:8081/api/boards",
+                       type: "POST",
+                       data: jsonData,
+                       contentType: "application/json",
+                       headers: {
+                           "Authorization": "Basic " + btoa("havi" + ":" + "test")
+                       },
+                       dataType: "json",
+                           success: function () {
+                               alert('저장 성공!');
+                               location.href = '/board/list';
+                       },
+                       error: function () {
+                           alert('저장 실패!');
+                       }
+                   });
+        });
+    </script>
+```
+```javascript
+                       headers: {
+                           "Authorization": "Basic " + btoa("havi" + ":" + "test")
+                       },
+```
+클라이언트 헤더에 ```Authorization```을 키값으로 하여 User 정보를 담아 저장 요청을 하게됩니다.        
+위 코드에서는 ```"Basic " + btoa("havi" + ":" + "test")```는 (아이디 : 패스워드) 형태로  
+앞서 Application 코드 수정부분에서 ```havi.password("{noop}test").roles("USER", "ADMIN").build()```로 했기 때문입니다.    
+
+btoa는 문자열을 base64로 인코딩해주는 함수입니다.  
+따라서 실제로 만들어지는 것은 '아이디 havi 와 패스워드 test가 base64로 인코딩 된 값'입니다.   
+
+우리는 Application 코드를 수정하면서 아이디가 'havi' 인 User를 패스워드는 'test', 권한은 'ADMIN'으로 설정했습니다.   
+위 Ajax에서 클라이언트가 'havi'User 정보르 담아 요청했기 때문에 ADMIN으로 권한이 인증됩니다.     
+게시글 저장 요청은 ADMIN만 저장할 수 있도록 설정했기 때문에 Ajax는 정상적으로 동작하게 됩니다.      
+  
+만약 위의 설정을 하지 않았을 경우에는 401 에러가 발생합니다.   
+즉, 인증되지 않은 상태라는 의미입니다.   
+ADMIN 권한을 가진 havi가 아닌 commonUser로 요청을 보내면 SpringBoot에서는 403에러가 발생할 것입니다.   
+
+## 4.7. 이벤트 바인딩
+REST API를 이용해서 게시글을 생성할 때는 REST API의 현재 시간을 생성날짜로 정합니다.     
+클라이언트에서 제공하는 현재 시간이 맞지 않을 수도 있고, 네트워크 지연으로 시간이 달라질 수도 있기 때문입니다.       
+   
+스프링부트 데이터 레스트에서는 여러 메서드의 발생 시점을 가로채서 원하는 데이터를 추가하거나 검사하는 이벤트 어노테이션을 제공합니다.         
+총 10개의 REST 관련 이벤트가 있습니다. (AOP 개념이 들어가 있는 것 같다.)          
+           
+**이벤트 10가지**   	  
+  
+* BeforeCreateEvent : 생성하기 전의 이벤트    
+* AfterCreateEvent : 생성한 후의 이벤트    
+* BeforeSaveEvent : 수정하기 전의 이벤트  
+* AfterSaveEvent : 수정한 후의 이벤트    
+* BeforeDeleteEvent : 삭제하기 전의 이벤트    
+* AfterDeleteEvent : 삭제한 후의 이벤트     
+* BeforeLinkSaveEvent : 관계를 가진 (1:1, N:M) 링크를 수정하기 전의 이벤트     
+* AfterLinkSaveEvent : 관계를 가진 (1:1, N:M) 링크를 수정한 후의 이벤트     
+* BeforeLinkDeleteEvent : 관계를 가진 (1:1, N:M) 링크를 삭제하기 전의 이벤트     
+* AfterLinkDeleteEvent : 관계를 가진 (1:1, N:M) 링크를 삭제한 후의 이벤트        
+      
+각 이벤트는 **```@Handler```+ 이벤트** 형태로 지원됩니다.           
+이벤트를 생성한 클래스에는 ```@RepositoryEventHandler```를 선언해주어 해당 클래스가 이벤트를 관리하는 용도라고 선언해야합니다.         
+사실 어노테이션 기반 외에도 직접 이벤트를 등록하는 방법도 있지만 어노테이션 기반이 편해서 사용을 해보겠습니다.   
+      
+___   
+   
+이제 실제로 이벤트 처리를 어떻게 하는지 알아보겠습니다.    
+event 패키지를 추가하고 게시글 생성 시 생성한 날짜와 수정한 날짜를 서버에서 설정하도록 하겠습니다.    
+   
+* ```data-rest/src/main/java/com/community/rest/event/```에서 BoardEventHandler 클래스 생성      
+   
+**BoardEventHandler**   
+```java
+package com.community.rest.event;
+
+import com.community.rest.domain.Board;
+import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
+import org.springframework.data.rest.core.annotation.HandleBeforeSave;
+import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+
+@RepositoryEventHandler
+public class BoardEventHandler {
+
+    @HandleBeforeCreate
+    public void beforeCreateBoard(Board board){
+        board.setCreatedDateNow();
+    }
+
+    @HandleBeforeSave
+    public void beforeSaveBoard(Board board){
+        board.setUpdateDateNow();
+    }
+
+}
+```
+```@HandleBeforeCreate```를 적용하여 게식르의 생성 날짜를 현재 시간으로 할당합니다.      
+```@HandleBeforeSave```는 게시글 수정 시 날짜를 현재 시간으로 할당합니다.      
+코드에는 없지만 명시적으로 Board에 관한 이벤트라고 알려주기 위해    
+```@RepositroyEventHandler(Board.class)```를 ```BoardEventHandler``` 클래스에 붙여 사용하는 것도 좋습니다.        
+이와 같이 어노테이션 기반 이벤트 핸들링은 아주 간단하게 이벤트를 제어할 수 있습니다.     
+   
+___  
+    
+이제 선언한 이벤트를 적용하는 일만 남았습니다.   
+스프링 부트 데이터 레스트는 이벤트를 적용하는 2가지 방법을 제공합니다.   
+
+1. 수동으로 이벤트를 적용하는 ApplicationListener를 사용하는 방법    
+```AbstractRepositoryEventListener``` 를 상속받고 관련 메서드를 오버라이드하여 원하는 이벤트만 등록    
+   
+2. 사용한 어노테이션을 기반으로 하는 이벤트 처리 방법       
+생성한 이벤트 클래스에는 ```@RepositoryEventHandler``` 어노테이션이 선언되어 있어야 합니다.      
+이 어노테이션은 ```BeanPostProcessor```에 클래스가 검사될 필요가 있음을 알려줍니다.       
+그리고 이벤트 핸들러를 등록하려면 ```@Component```를 사용하거나 직접 ```ApplicationContext```에 빈으로 등록해야 합니다.        
+   
+___   
+   
+DataRestApplication 클래스에 직접 빈으로 등록하는 방법을 알아보겠습니다.   
+
+```java
+	@Bean
+	BoardEventHandler boardEventHandler(){
+		return new BoardEventHandler();
+	}
+```
+
+**DataRestApplication**
+```java
+package com.community.rest;
+
+
+import com.community.rest.domain.Board;
+import com.community.rest.domain.enums.BoardType;
+import com.community.rest.event.BoardEventHandler;
+import com.community.rest.repository.BoardRepository;
+import com.community.rest.repository.UserRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
+@SpringBootApplication
+public class DataRestApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DataRestApplication.class, args);
+	}
+
+	@Bean
+	BoardEventHandler boardEventHandler(){
+		return new BoardEventHandler();
+	}
+
+	@Bean
+	public CommandLineRunner runner(UserRepository userRepository, BoardRepository boardRepository)
+			throws Exception {
+		return (args) -> {
+			com.community.rest.domain.User user = userRepository.save(com.community.rest.domain.User.builder()
+					.name("havi")
+					.password("test")
+					.email("havi@gmail.com")
+					.createdDate(LocalDateTime.now())
+					.build()
+			);
+
+			IntStream.rangeClosed(1, 200).forEach(index -> {
+				boardRepository.save(Board.builder()
+						.title("게시글" + index)
+						.subTitle("순서" + index)
+						.content("콘텐츠")
+						.boardType(BoardType.free)
+						.createdDate(LocalDateTime.now())
+						.updatedDate(LocalDateTime.now())
+						.user(user)
+						.build());
+			});
+
+		};
+	}
+
+	@Configuration
+	@EnableGlobalMethodSecurity(prePostEnabled = true)
+	@EnableWebSecurity
+	static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+		@Bean
+		InMemoryUserDetailsManager userDetailsManager() {
+			User.UserBuilder commonUser = User.withUsername("commonUser");
+			User.UserBuilder havi = User.withUsername("havi");
+
+			List<UserDetails> userDetailsList = new ArrayList<>();
+			userDetailsList.add(commonUser.password("{noop}common").roles("USER").build());
+			userDetailsList.add(havi.password("{noop}test").roles("USER", "ADMIN").build());
+
+			return new InMemoryUserDetailsManager(userDetailsList);
+		}
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			CorsConfiguration configuration = new CorsConfiguration();
+			configuration.addAllowedOrigin("*");
+			configuration.addAllowedMethod("*");
+			configuration.addAllowedHeader("*");
+			UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+			source.registerCorsConfiguration("/**", configuration);
+
+			http.httpBasic()
+					.and().authorizeRequests()
+					//.antMatchers(HttpMethod.POST, "/Boards/**").hasRole("ADMIN")
+					.anyRequest().permitAll()
+					.and().cors().configurationSource(source)
+					.and().csrf().disable();
+		}
+	}
+
+}
+```
+    
+___
+    
+글을 생성하고 수정해보며 날짜 데이터가 정상적으로 저장되는지 테스트하겠습니다.      
+결과 데이터는 간단한 테스트 코드를 통해 확인해봅니다.       
+
+* ```/data-rest/src/test/java/com/community/rest/``` BoardEventTest 테스트 클래스를 작성한다.   
+
+**BoardEventTest**
+```java
+package com.community.rest;
+
+import com.community.rest.domain.Board;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.junit.Assert.assertNotNull;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = DataRestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@AutoConfigureTestDatabase
+public class BoardEventTest {
+    private TestRestTemplate testRestTemplate = new TestRestTemplate("havi", "test");
+
+    @Test
+    public void 저장할때_이벤트가_적용되어_생성날짜가_생성되는가() {
+        Board createdBoard = createBoard();
+        assertNotNull(createdBoard.getCreatedDate());
+    }
+
+    @Test
+    public void 수정할때_이벤트가_적용되어_수정날짜가_생성되는가() {
+        Board createdBoard = createBoard();
+        Board updatedBoard = updateBoard(createdBoard);
+        assertNotNull(updatedBoard.getUpdatedDate());
+    }
+
+    private Board createBoard() {
+        Board board = Board.builder().title("저장 이벤트 테스트").build();
+        return testRestTemplate.postForObject("http://127.0.0.1:8081/api/boards", board, Board.class);
+    }
+
+    private Board updateBoard(Board createdBoard) {
+        String updateUri = "http://127.0.0.1:8081/api/boards/1";
+        testRestTemplate.put(updateUri, createdBoard);
+        return testRestTemplate.getForObject(updateUri, Board.class);
+    }
+}
+```
+   
+___
+   
+```java
+@SpringBootTest(classes = DataRestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+```
+스프링 부트 데이터 레스트를 테스트하기 위해 시큐리티 설정이 들어 있는 ```DataRestApplication``` 클래스를 주입합니다.      
+포트도 설정에 정의되어 있는 8081을 동일하게 사용하기 위해 ```DEFINED_PORT``` 로 지정하여 사용합니다.       
+
+___
+   
+```java
+@AutoConfigureTestDatabase
+```
+H2가 ```build.gradle``` 의 클래스 경로에 포함되어 있으면 자동으로 H2를 테스트 데이터베이스로 지정합니다.        
+만약 이 어노테이션을 사용하지 않는다면 테스트에서 Board를 저장할 때마다 실제 데이터베이스에 반영될 겁니다.       
+      
+___
+   
+```java
+    private TestRestTemplate testRestTemplate = new TestRestTemplate("havi", "test");
+```
+TestRestTemplate은 RestTemplate을 래핑한 객체로서 GET, POST, PUT, DELETE 와 같은 httpRequest를 편하게 테스트하도록 도와줍니다.      
+예제에서처럼 시큐리티 설정에 ADMIN으로 생성한 'havi'의 정보를 파라미터로 넣어주면 해당 아이디로 권한 인증이 통과됩니다.        
+이와 같은 설정을 해주는 이유는 우리가 저장 메소드를 사용할 수 있는 권한을 ADMIN으로 지정해주었기 때문입니다.     
+   
+___
+
+```java
+    private Board createBoard() {
+        Board board = Board.builder().title("저장 이벤트 테스트").build();
+        return testRestTemplate.postForObject("http://127.0.0.1:8081/api/boards", board, Board.class);
+    }
+```
+Board 에 title 값만 부여하여 저장했습니다.     
+저장된 Board 객체의 createDate 값이 null 이 아니라면 ```beforeCreateBoard``` 메서드가 Board 객체에 저장되기 전에 제대로 실행된 겁니다.     
+
+___
+
+```java
+    private Board updateBoard(Board createdBoard) {
+        String updateUri = "http://127.0.0.1:8081/api/boards/1";
+        testRestTemplate.put(updateUri, createdBoard);
+        return testRestTemplate.getForObject(updateUri, Board.class);
+    }
+```
+수정 시 이벤트가 적용되는지 테스트하기 위해 createBoard 메서드를 재사용하여 Board 객체를 생성하고      
+updateBoard 메서드를 통해 PUT 방식으로 데이터를 수정하는 요청을 보냈습니다.       
+수정이 정상적으로 완료된 Board 객체의 updateDate 값이 null이 아니라면 beforeSaveBoard 메서드가 수정되기 전에 제대로 실행된겁니다.      
+  
+## 4.9. URI 처리   
+URI 경로 관리에 대해 알아보겠습니다.     
+지금부터 진행하는 예제는 basePath 를 ```/api```로 설정한다고 가정합니다.     
+
+___     
+    
+```
+http://localhost:8081/api/boards
+```
+
+basePath만 설정하면 게시판의 기본 접속 URI는 위와 같습니다.  
+    
+___     
+    
+```java
+@RepositoryRestResource(path = "notice")   
+```
+현재 BoardRepository 클래스에 추가되어 있는 ```@RepositoryRestResource```의 path 기본값은 ```boards``` 입니다.   
+```@RepositoryRestResource```의 기능 중에는 위와 같이 path 를 ```notice```로 수정할 수 있는 방법도 있습니다.      
+      
+___
+    
+```
+http://localhost:8081/api/boards/search
+```
+URI로 요청하는 모든 검색 쿼리 메서드는 search 하위로 표현됩니다.   
+위와 같은 기본 설정 URI를 가지고 있습니다.   
+   
+___   
+    
+일치하는 제목을 찾는 쿼리를 만들겠습니다.      
+다음과 같이 리포지토리에 해당 쿼리 메서드를 만들고 위 기본 검색 URI를 바탕으로 쿼리를 만들어 호출하면 됩니다.       
+  
+```java
+    @RestResource
+    List<Board> findByTitle(@Param("title") String title);
+```
+  
+**BoardRepository**  
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.Board;
+
+import com.community.rest.domain.projection.BoardOnlyContainTitle;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.List;
+
+
+@RepositoryRestResource(excerptProjection = BoardOnlyContainTitle.class)
+public interface BoardRepository extends JpaRepository<Board, Long> {
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    <S extends Board> S save(S entity);
+
+    @RestResource
+    List<Board> findByTitle(@Param("title") String title);
+}
+```
+   
+___ 
+   
+추가된 제목을 찾는 쿼리를 호출하는 URI 를 다음과 같이 표현합니다.  
+```
+http://localhost:8081/api/boards/search/findByTitle?title=게시글1
+```
+
+별도로 ```@RestResource```의 path를 설정하지 않으면 기본값에 해당 메서드명이 적용됩니다.    
+다음과 같이 'query'로 값을 변경하여 path 값을 다르게 줄 수 있습니다.     
+
+```java
+    @RestResource(path = "query")
+    List<Board> findByTitle(@Param("title") String title);
+```
+   
+**BoardRepository**
+```java
+package com.community.rest.repository;
+
+import com.community.rest.domain.Board;
+
+import com.community.rest.domain.projection.BoardOnlyContainTitle;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.List;
+
+
+@RepositoryRestResource(excerptProjection = BoardOnlyContainTitle.class)
+public interface BoardRepository extends JpaRepository<Board, Long> {
+
+    @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    <S extends Board> S save(S entity);
+
+    @RestResource(path = "query")
+    List<Board> findByTitle(@Param("title") String title);
+}
+```
+    
+___ 
+   
+특정 리포지토리, 쿼리 메서드, 필드를 노출하고 싶지 않은 상황도 있을 겁니다.       
+그럴 때는 다음과 같이 ```exported```를 ```false```로 지정하면 됩니다.       
+```@RestResource``` 는 메서드와 도메인 필드에서도 사용할 수 있습니다.       
+
+```java
+@RepositoryRestResource(exported = false)
+@RestResource(exported = false)
+```
+일반적인 경우에는 '프로젝션 노출 필드 제한하기'에서 알아본 프로젝션을 사용하는 방법이 더 효과적입니다.     
+프로젝션을 사용하기 힘든 상황이라면 ```exported = false``` 로 지정해서 노출을 제한하는 방법을 추천합니다.         
+
+## 4.10. HAL 브라우저 적용하기   
+크롬 JSON 뷰어 플러그인을 사용하면 온라인에서 JSON을 그래픽 기반으로 살펴볼 수 있습니다.         
+하지만 이보다 더 유용한 도구가 있습니다.        
+HAL 브라우저를 사용하면 요청과 응답 데이터 분만 아니라 모든 테스트를 GUI 화면에서 진행할 수 있습니다.     
+   
+HAL 브라우저의 의존성 추가는 다음과 같은 코드 한 줄이면 적용할 수 있습니다.   
+```gradle
+        compile('org.springframework.data:spring-data-rest-hal-browser')
+```
+   
+___  
+    
+REST API를 구동시키고 루트 경로로 들어가면 자연스럽게 HAL 브라우저 UI 창으로 리다이렉트 됩니다.      
+      
+[사진]      
+          
+* Explorer : 검색할 URI를 지정합니다.                    
+* Custom Request Headers : 검색을 요청할 때 헤더를 설정할 수 있습니다.                 
+* Properties : 페이징 처리와 같은 부가적인 프로퍼티 정보를 표현합니다.                  
+* Links : 응답 데이터에서 제공하는 링크값의 데이터를 표현합니다.                
+* Response House : 응답 헤더를 표현합니다.               
+* Response Body : 응답 바디를 JSON형으로 표현합니다.             
+        
+위 사진에서 요청 정보와 설정한 정보 그리고 어떻게 응답이 왔는지 한눈에 확인할 수 있습니다.               
+요청마다 우베 서버를 구동시킬 필요도 별도로 REST 테스트 도구를 사용할 필요도 없습니다.            
+       
+ ___
+     
+'Links' 항목의 GET 메뉴 버튼을 누릅니다.    
+        
+[사진]   
+       
+GET 요청 시 어떤 파라미터가 필요한지 알 수 있고, 적절한 값을 추가하여 URI를 요청할 수 있습니다.        
+이는 페이징 처리나 프로젝션 관련 파라미터를 추가할 때 용이합니다.      
+    
+HAL 브라우저가 단순히 GET 요청에만 사용되는 것은 아닙니다.          
+POST, PUT, PATCH 등 다양한 요청을 테스트할 수 있습니다.          
+     
+___
+     
+이번에는 NON-GET 메뉴 버튼을 누릅니다.    
+   
+[사진]   
+   
+User의 모든 필드가 보이지 않지만 마우스로 이동하면 모든 필드를 확인할 수 있습니다.   
+만약 필드들이 제대로 매핑되지 않으면 박스 하나만 나옵니다.   
+이때는 수동으로 JSON 데이터를 만들어 요청을 보내야 합니다.   
+Action 필드를 보면 POST가 기본 메서드로 나타나며 다른 메서드로 수정하여 요청할 수 있습니다.  
+
+# 5. 마치며   
+이 장에서는 REST에 대한 개념과 사용 방법을 익혔습니다.     
+REST가 무엇인지, 어떻게 설계해야 RESTful API를 구성할 수 있는지 살펴보았습니다.     
+RESTful의 핵심 제약 조건 중 하나인 HATEOAS를 지키려면 관련 URI를 포함하여 API를 구성해야 한다는 것도 확인했습니다.     
+   
+스프링 부트 데이터 레스트의 다양한 설정과 기능을 익혔습니다.      
+* 노출 전략 설정        
+* ```@RepositoryRestController```를 사용한 커스텀 레스트 컨트롤러 구성        
+* 프로젝션으로 노출할 필드 제한   
+* 메서드의 권한을 제한하는 롤 부여   
+* 메서드가 실행되기 전과 후에 이벤트 바인딩  
+* URI를 어떻게 최적화하는지,   
+* UI적으로 REST를 잘 보여주며 테스트할 수 있는 도구인 HAL 브라우저등을 알아보았습니다.   
+   
+MVC 패턴은 일반적인 스프링 구성을 사용하여 개발합니다.      
+그러므로 디테일한 구성을 할 수 있습니다.       
+하지만 모든 API를 일일이 신경 써서 개발해야 하며 반복되는 작업을 피할 수 없습니다.     
+    
+반면 스프링 부트 데이터 레스트에서 제공하는 방식은 반복되는 작업을 피할 수 있습니다.      
+**불필요한 컨트롤러와 서비스 영역을 제거**하여 코드를 단축시킬 수 있습니다.   
+또한 컨트롤러 쪽 영역을 생성하여 최적화할 수 있습니다.    
+하지만 상세한 구성에 제약이 있으며 어느정도 정해진 틀에 맞춰 개발을 진행해야 합니다.     
+   
+두 방식 모두 장단점이 명확히 존재합니다.   
+만약 두 방식 중 하나를 선택해야 하는 상황이라면 전적으로 상황에 다른 선택이 중요합니다.     
+MVC 패턴은 대부분의 개발자가 범용적으로 알고 있지만       
+스프링 부트 데이터 레스트는 따로 익혀야 사용이 가능합니다.         
+다만 실제 서비스에서는 예상치 못한 요구사항이 쏟아져 나오는 경우가 많을 것이며 분명 대응하기 어려운 부분도 있습니다.        
+개발 환경에 따라 적절한 방식을 선택하여 진행하는 것이 현명합니다.         
+   
+
 
