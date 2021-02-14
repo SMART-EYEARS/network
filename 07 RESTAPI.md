@@ -319,7 +319,8 @@ GET http://localhost:8080/api/books?page=0&size=10&sort=desc
 content-type: application/json    
 ```    
 page, size, sort 파라미터를 따로 지정하지 않으면 서버에서 기본으로 설정한 값으로 반환됩니다.   
-    
+
+### HTTP METHOD
 |METHOD|역할|  
 |------|----|    
 |POST|POST를 통해 해당 URI를 요청하면 리소스를 생성합니다.|    
