@@ -105,7 +105,7 @@ Polling 이란, 클라이언트가 서버에게 주기적으로 Request를 보�
 Long Polling 방식은 일반 Polling 방식과 포맷은 같다.        
 단, Polling 방식과의 차이점으로는 `time out`될 때까지 기다린다는 것이다.     
        
-![longpolling.PNG](./images/longpolling.PNG)         
+![longPolling.PNG](./images/longPolling.PNG)         
             
 Long Polling 방식은 요청을 보내고 제**한시간내에 이벤트가 발생하면 데이터를 받는 방식**이다.               
 만약 데이터를 받지 못했다 하더라도, `Clinet`에서는 바로 다시 서버에 요청을 보낸다.                  
