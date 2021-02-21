@@ -88,6 +88,33 @@ Polling 이란, 클라이언트가 서버에게 주기적으로 Request를 보�
 무엇보다 `Polling` 방식에 초점을 두어 프로그래밍을 해야 한다는 문제가 있다. (완벽한 Polling을 위해)            
    
 ## Long Polling   
+
+```javascript
+create longPolling = () =>   
+  fetch("/api/posts/long-polling")
+    .then((response) => response.json())
+    .then((prependPosts))
+    .then(longPolling)   
+
+fetchPosts(0).then(longPolling)
+```
+```kotlin
+@GetMapping("/long-polling")
+fun longPolling(): Mono<PostResponse> = postService.longPolling();
+```
+
+``` kotlin
+fun writePost(request: PostRequest)  {
+	val response = postRepository.save(request.toPost())
+			.toResponse()
+	waits.forEach { it.success(response) }
+}
+
+fun longPolling(): Mono<PostResponse> = Mono.create {
+	it.onDispose { wait.remove(it) }
+	waits.add(it)
+}
+```
 Long Polling 방식은 일반 Polling 방식과 포맷은 같다.        
 단, Polling 방식과의 차이점으로는 `time out`될 때까지 기다린다는 것이다.     
        
