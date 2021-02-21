@@ -47,6 +47,7 @@ AJAX는 전체 페이지를 로딩하는 것이 아닌, 일부분만 데이터�
 ## Polling       
 ![polling.PNG](./images/polling.PNG)   
 
+**Client : javascript**
 ```javascript
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -93,6 +94,7 @@ Long Polling 방식은 일반 Polling 방식과 포맷은 같다.
        
 ![longPolling.PNG](./images/longPolling.PNG)         
 
+**Client : javascript**
 ```javascript
 create longPolling = () =>   
   fetch("/api/posts/long-polling")
