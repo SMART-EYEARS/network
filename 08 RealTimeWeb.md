@@ -213,7 +213,7 @@ SSE는 기존 HTTP 웹 서버에서 `HTTP API` 만으로 동작되며 구현도 
 * Polling :   
   * 서버 개발을 할 수 없는 상황이다.  
   * 외부 API가 서버 푸시를 지원하지 않는다.  
-* ~~LongPollong  
+* ~~LongPollong    
 * Webscocket
   * 네트워크 지연을 최소화해야 한다.  
   * 채팅, 게임과 같이 사용자간 빠른 피드백이 이루어져야 한다.  
