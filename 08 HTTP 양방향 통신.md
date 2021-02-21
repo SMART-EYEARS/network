@@ -68,10 +68,21 @@ Polling 이란, 클라이언트가 서버에게 주기적으로 Request를 보�
 클라이언트와 서버 양쪽에 무리를 주는 단점이 있고            
 무엇보다 `Polling` 방식에 초점을 두어 프로그래밍을 해야 한다는 문제가 있다. (완벽한 Polling을 위해)            
    
-## long polling   
-AJAX Long Polling은 클라이언트가 주기적으로 서버에 요청을 날리는 대신에, 서버로부터 응답을 받을 때만 다시 서버에 요청을 날린다.
+## Long Polling   
+Long Polling 방식은 일반 Polling 방식과 포맷은 같다.        
+단, Polling 방식과의 차이점으로는 `time out`될 때까지 기다린다는 것이다.   
+     
+![longpolling.png](./images/longpolling.png)         
+          
+즉, Long Polling 방식은        
+요청을 보내고 제한시간내에 이벤트가 발생하면 데이터를 받는 방식이다.          
+만약 데이터를 받지 못했다 하더라도, Clinet에서는 바로 다시 서버에 요청을 보낸다.             
+이 결과, 연결은 무한히 지속되게 되며 client는 마치 실시간으로 데이터를 받는 느낌을 받게 된다.    
+  
+이전 Polling과 비교하자면      
+주기적으로 서버에 요청을 날리는 대신에,    
+서버로부터 응답을 받을 때만 서버에 요청을 날려 Polling의 단점을 해결했다.    
 
-![longpolling.png](./images/longpolling.png)     
 
 
 
