@@ -244,15 +244,16 @@ Webpack Dev Server로 리버스 프록싱 우회가능
 가장 좋은 방법은 서버 개발자에게 도움을 요청하자     
 
 # 추가 - Spring boot CORS 설정하기   
-
-
+Spring Reference를 참고하면서 한 번 따라해보았다.   
+[링크](https://github.com/spring-reference-trainning/SpringBoot-Rest)         
+   
 # 참고 
 블로그 :   
-https://evan-moon.github.io/2020/05/21/about-cors/          
-https://developer.mozilla.org/ko/docs/Web/HTTP/CORS     
-https://developer.mozilla.org/ko/docs/Glossary/Preflight_request     
-https://minzoovv.dev/HTTP/cors/   
-https://brownbears.tistory.com/336   
-https://ko.javascript.info/fetch-crossorigin#ref-561  
-동영상 :   
-https://www.youtube.com/watch?v=7iGIfcEsc2g&ab_channel=%EC%9A%B0%EC%95%84%ED%95%9CTech
+https://evan-moon.github.io/2020/05/21/about-cors/             
+https://developer.mozilla.org/ko/docs/Web/HTTP/CORS        
+https://developer.mozilla.org/ko/docs/Glossary/Preflight_request       
+https://minzoovv.dev/HTTP/cors/     
+https://brownbears.tistory.com/336      
+https://ko.javascript.info/fetch-crossorigin#ref-561     
+동영상 :     
+https://www.youtube.com/watch?v=7iGIfcEsc2g&ab_channel=%EC%9A%B0%EC%95%84%ED%95%9CTech    
