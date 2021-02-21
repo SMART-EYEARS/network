@@ -175,7 +175,7 @@ LongPolling은 Polling과 조금 다르게 **지속적인 연결을 목표로 �
 하지만, `socket` 만을 위한 별도의 서버와 프로토콜로 통신하기 때문에 구현하는 비용이 많이 든다
     
 ## Server-sent event(SSE)     
-![sse.png](./images/sse.PNG)   
+![sse.png](./images/sse.png)   
    
 SSE는 `Server-sent event`의 약어로 **서버의 데이터를 실시간으로, 지속적으로 Streaming 하는 기술**이다.         
 HTTP 스트리밍 방식이라고도 하며 SSE 사양에 따라 구현한 통신 방식이다.        
