@@ -98,11 +98,13 @@ create longPolling = () =>
 
 fetchPosts(0).then(longPolling)
 ```
+**Controller : kotlin**
 ```kotlin
 @GetMapping("/long-polling")
 fun longPolling(): Mono<PostResponse> = postService.longPolling();
 ```
-
+    
+**Service : kotlin**
 ``` kotlin
 fun writePost(request: PostRequest)  {
 	val response = postRepository.save(request.toPost())
