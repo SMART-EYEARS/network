@@ -65,7 +65,17 @@ async function polling() {
 
 fetchPosts(0).then(polling)  
 ```
-
+```kotlin
+@GetMapping
+fun getPosts(@RequestParam cursor: Long): ResponseEntity<List<PostResponse>> {
+	return RepositoryEntity.ok(postService.getPosts(cursor))
+}
+```
+```kotlin
+fun getPosts(cursor: Long = 0L): List<PostResponse> = postRepository
+    .findByIdGreaterThan(cursor)
+    .map( it. toResponse) }
+```
 Polling 이란, 클라이언트가 서버에게 주기적으로 Request를 보내는 방식을 의미한다.              
 서버가 클라이언트에게 알려야 할 이벤트가 주기적으로 발생할 때에는 비용 대비 효과가 가장 좋다는 특징을 가지고 있다.   
 단, 이때 전송할 데이터의 유무를 따지지 않기 때문에 Response로는 빈 데이터/실패 데이터를 받는다.      
