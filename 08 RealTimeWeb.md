@@ -143,8 +143,8 @@ LongPolling은 Polling과 조금 다르게 **지속적인 연결을 목표로 �
 **버퍼와 같은 동작을 처리하는 알고리즘이라 생각하면 된다.**       
     
 ## Socket 
-![socket.png](./images/socket.png)       
-  
+![socket.PNG](./images/socket.PNG)          
+     
 웹소켓은 **`하나의 TCP 연결 위`에서 `전이중(full-duplex) 통신` `채널`** 을 제공하는 프로토콜이다.             
 웹소켓을 진정한 실시간 웹 기술이라고 할 수 있는 이유는 `하나의 TCP 연결`과 `전이중`이라는 단어에 담겨있다.       
           	     
