@@ -65,12 +65,14 @@ async function polling() {
 
 fetchPosts(0).then(polling)  
 ```
+**Controller : kotlin**
 ```kotlin
 @GetMapping
 fun getPosts(@RequestParam cursor: Long): ResponseEntity<List<PostResponse>> {
 	return RepositoryEntity.ok(postService.getPosts(cursor))
 }
 ```
+**Service : kotlin**
 ```kotlin
 fun getPosts(cursor: Long = 0L): List<PostResponse> = postRepository
     .findByIdGreaterThan(cursor)
