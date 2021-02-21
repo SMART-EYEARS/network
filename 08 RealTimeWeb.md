@@ -65,15 +65,15 @@ async function polling() {
 
 fetchPosts(0).then(polling)  
 ```
-**Controller : kotlin**
-```kotlin
+**Controller : webflux**
+```java
 @GetMapping
 fun getPosts(@RequestParam cursor: Long): ResponseEntity<List<PostResponse>> {
 	return RepositoryEntity.ok(postService.getPosts(cursor))
 }
 ```
-**Service : kotlin**
-```kotlin
+**Service : webflux**
+```java
 fun getPosts(cursor: Long = 0L): List<PostResponse> = postRepository
     .findByIdGreaterThan(cursor)
     .map( it. toResponse) }
@@ -116,14 +116,14 @@ create longPolling = () =>
 
 fetchPosts(0).then(longPolling)
 ```
-**Controller : kotlin**
-```kotlin
+**Controller : webflux**
+```java
 @GetMapping("/long-polling")
 fun longPolling(): Mono<PostResponse> = postService.longPolling();
 ```
     
-**Service : kotlin**
-``` kotlin
+**Service : webflux**
+```java
 fun writePost(request: PostRequest)  {
 	val response = postRepository.save(request.toPost())
 			.toResponse()
@@ -177,6 +177,33 @@ LongPolling은 Polling과 조금 다르게 **지속적인 연결을 목표로 �
 ## Server-sent event(SSE)     
 ![sse.png](./images/sse.png)   
    
+```javascript  
+const subscribe = () => {
+    const subcriber = new EventSource("/api/posts/subscribe")
+    subscriber.onmessage = (e) => {
+        prependPosts(JSON.parse(e.data))  
+    }
+}
+
+fetchPosts(0).then(subscribe)     
+```
+```java
+@GetMapping("/subscribe", produces = [MediaType.TEXT_EVENT_STREAM_VALUE]) 
+fun subscribe(): Flux<PostResponse> = postService.subscribe()   
+```   
+```java
+fun writePosts(request: PostRequest) {
+    val response = postRepository.save(request.toPost())
+        .toResponse()
+    subscribes.forEach { it.next(response) }      	
+}
+
+fun subscribe(): Flux<PostResponse> = Flux.create {
+    it.onDispose {subscribers.remove(it)}  
+    subscribers.add(it)
+}
+```   
+
 SSE는 `Server-sent event`의 약어로 **서버의 데이터를 실시간으로, 지속적으로 Streaming 하는 기술**이다.         
 HTTP 스트리밍 방식이라고도 하며 SSE 사양에 따라 구현한 통신 방식이다.        
            
