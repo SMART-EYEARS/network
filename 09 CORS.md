@@ -1,4 +1,4 @@
-# CORS
+# 09 CORS
 > Cross-Origin Resource Sharing   
 > **교차 출처 자원 공유**      
           
