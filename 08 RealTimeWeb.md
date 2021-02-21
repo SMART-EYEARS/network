@@ -63,19 +63,6 @@ async function polling() {
 }   
 
 fetchPosts(0).then(polling)  
-
-// 다른 방식 
-
-var url = '/get/newInfo';
-var polling = function(url) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.onreadystatechange = function () { ... };
-    xhr.send(url);
-};
-
-var intervalId = setInterval( function() { polling(url); }, 30000 ); 
-
 ```
 
 Polling 이란, 클라이언트가 서버에게 주기적으로 Request를 보내는 방식을 의미한다.              
