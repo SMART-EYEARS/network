@@ -44,7 +44,7 @@ OAuth는 인증을 위한 오픈 스탠더드 프로토콜로,
       * **`클라이언트 ID` :** 애플리케이션이 서드파티 API 사용을 위해 등록한 ID  
       * **`클라이언트 비밀번호` :** 애플리케이션이 서드파티 API 사용을 위해 등록한 비밀번호(SecretKey)   
       * **`리다이렉트 URI` :** 해당 애플리케이션을 식별하고 식별값(Access token)을 전달할 통로
-      * **`인증 타입` :** 코드/토큰      
+      * **`인증 타입` :** 코드      
 4. 마지막으로 응답받은 액세스 토큰을 사용하여 리소스 서버에 사용자의 데이터를 요청합니다.  
    
       
@@ -61,11 +61,25 @@ OAuth는 인증을 위한 오픈 스탠더드 프로토콜로,
 
 ![ImplicitGrant.png](./images/ImplicitGrant.png)     
 
-
+1. 클라이언트가 파라미터로 **클라이언트 ID**, **리다이렉트 URI**, **응답 타입**을 지정하여 권한 서버에 전달한다.       
+2. 정상적으로 인증이 되면 **액세스 토큰**을 클라이언트에 보냅니다.        
+3. 클라이언트는 **액세스 토큰 검증** 을 권한 서버에 요청한다.    
+4. 마지막으로 검증받은 액세스 토큰을 사용하여 리소스 서버에 사용자의 데이터를 요청합니다.     
+   
 ## 리소스 소유자 암호 자격 증명 승인 타입(Resource Owner Password Credentials Grant Type)
 
 ![ResourceOwner PasswordCredentialsGrant.png](./images/ResourceOwner%20PasswordCredentialsGrant.png)
 
+1. 클라이언트에서 바로 인증을 진행하며 대부분 ID, Password를 통해서 자격 증명이 진행된다.
+2. 넘겨 받은 정보기반으로 권한 서버에 Access Token 정보를 요청한다.
+3. Access Token 정보를 응답 받습니다. 이때 Refresh Token 정보도 넘겨 줄 수도 있다.
+4. Access Token 기반으로 Resource Server와 통신한다.
+
 ## 클라이언트 자격 증명 승인 타입(Client Credentials Grant Type)  
 
 ![ClientCredentialsGrantType.png](./images/ClientCredentialsGrantType.png) 
+   
+1. Access Token 정보를 요청한다.     
+2. Access Token 정보를 응답한다. 이때 Refresh Token 정보는 응답하지 않는 것을 권장한다.       
+3. Access Token 기반으로 Resource Server와 통신한다.   
+    
