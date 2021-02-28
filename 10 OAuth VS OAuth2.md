@@ -31,7 +31,8 @@ OAuth에서 'Auth'는 **⭐️'Authentication'(인증)뿐만 아니라 'Authoriz
    
 ## OAuth 1.0
 
-
+![OAuth1.png](./images/OAuth1.png)   
+ 
 
 |용어|설명|
 |---|-----------|
