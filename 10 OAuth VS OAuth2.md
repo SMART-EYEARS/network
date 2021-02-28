@@ -168,13 +168,67 @@ Host: nid.naver.com
 |oauth_callback|Service Provider가 인증을 완료한 후 리다이렉트할 Consumer의 웹 주소.<br>만약 Consumer가 웹 애플리케이션이 아니라 리다이렉트할 주소가 없다면<br>소문자로 'oob'(Out Of Band라는 뜻)를 값으로 사용한다.|
 |oauth_consumer_key|Consumer를 구별하는 키 값.<br>Service Provider는 이 키 값으로 Consumer를 구분한다.|
 |oauth_nonce|Consumer에서 임시로 생성한 임의의 문자열.<br>oauth_timestamp의 값이 같은 요청에서는 유일한 값이어야 한다.<br>이는 악의적인 목적으로 계속 요청을 보내는 것을 막기 위해서이다.|
-|oauth_signature|OAuth 인증 정보를 암호화하고 인코딩하여 서명 값.<br>OAuth 인증 정보는 매개변수 중에서 oauth_signature를 제외한 나머지 매개변수와 HTTP 요청 방식을 문자열로 조합한 값이다.<br>암화 방식은 oauth_signature_method에 정의된다.|
+|oauth_signature|OAuth 인증 정보를 암호화하고 인코딩하여 서명 값.<br>OAuth 인증 정보는 매개변수 중에서<br>oauth_signature를 제외한 나머지 매개변수와 HTTP 요청 방식을 문자열로 조합한 값이다.<br>암화 방식은 oauth_signature_method에 정의된다.|
 |oauth_signature_method|oauth_signature를 암호화하는 방법.<br>HMAC-SHA1, HMAC-MD5 등을 사용할 수 있다.|
 |oauth_timestamp|요청을 생성한 시점의 타임스탬프.<br>1970년1월 1일 00시 00분 00초 이후의 시간을 초로 환산한 초 단위의 누적 시간이다.|
 |oauth_version|OAuth 사용 버전.<br>1.0a는 1.0이라고 명시하면 된다.|
 
+### Access Token   
+      
+Access Token을 요청하는 방법은 Request Token을 요청하는 방법과 거의 같다.          
+다만, 사용하는 `매개변수의 종류`가 약간 다르고 `oauth_signature`를 생성할 때 사용하는 키가 다르다.          
+Access Token 을 요청할 때에는 매개변수 `oauth_callback`는 없고,        
+`oauth_token`와 `oauth_verifer`가 있다.       
 
-### 
-###
+Request Token 발급을 요청할 때에는 Consumer Secret Key를 사용해 `oauth_token_secret`을 생성했다.    
+
+Access Token 발급을 요청할 때에는 Consumer Secret Key에 `oauth_token_secret`을 결합한 값,
+`Consumer Secret Key + & + oauth_token_secret`을 사용해, `oauth_token_secret`을 생성한다. 
+암호화 키를 변경하여 보안을 더 강화하는 것이다.     
+
+|매개변수|설명|
+|-----|----|
+|oauth_consumer_key|	Consumer를 구별하는 키 값. Service Provider는 이 키 값으로 Consumer를 구분한다.
+|oauth_nonce|	Consumer에서 임시로 생성한 임의의 문자열. oauth_timestamp의 값이 같은 요청에서는 유일한 값이어야 한다. 이는 악의적인 목적으로 계속 요청을 보내는 것을 막기 위해서이다.
+|oauth_signature|	OAuth 인증 정보를 암호화하고 인코딩하여 서명 값. OAuth 인증 정보는 매개변수 중에서 oauth_signature를 제외한 나머지 매개변수와 HTTP 요청 방식을 문자열로 조합한 값이다. 암화 방식은 oauth_signature_method에 정의된다.
+|oauth_signature_method|	oauth_signature를 암호화하는 방법. HMAC-SHA1, HMAC-MD5 등을 사용할 수 있다.
+|oauth_timestamp|	요청을 생성한 시점의 타임스탬프. 1970년1월 1일 00시 00분 00초 이후의 시간을 초로 환산한 초 단위의 누적 시간이다.
+|oauth_version|	OAuth 사용 버전
+|oauth_verifier|	Request Token 요청 시 oauth_callback으로 전달받은 oauth_verifier 값
+|oauth_token|	Request Token 요청 시 oauth_callback으로 전달받은 oauth_token 값
+   
+위 표에 정의한 매개변수를 상황에 맞게 정의한 다음 `Access Token`을 요청하면       
+`oauth_token` 과 `oauth_token`을 전달하게 된다.         
+       
+### Access Token 사용하기  
+   
+```http
+Authorization: OAuth oauth_consumer_key="dpf43f3p2l4k3l03",  
+  oauth_token="nSDFh734d00sl2jdk",  
+  oauth_signature_method="HMACSHA1",  
+  oauth_timestamp="1379123202",  
+  oauth_nonce="csrrkjsd0OUhja",  
+  oauth_signature="MdpQcU8iPGGhytrSoN%2FUDMsK2sui9I%3D"  
+Accept-Encoding: gzip, deflate  
+Connection: Keep-Alive  
+Host: http://openapi.naver.com 
+```   
+
+|매개변수|설명|
+|------|---|
+|oauth_consumer_key|Consumer를 구별하는 키 값.<br>Service Provider는 이 키 값으로 Consumer를 구분한다.|
+|oauth_nonce|Consumer에서 임시로 생성한 임의의 문자열.<br>oauth_timestamp의 값이 같은 요청에서는 유일한 값이어야 한다.<br>이는 악의적인 목적으로 계속 요청을 보내는 것을 막기 위해서이다.|
+|oauth_signature|OAuth 인증 정보를 암호화하고 인코딩하여 서명 값.<br>OAuth 인증 정보는 매개변수 중에서 oauth_signature를 제외한 나머지 매개변수와 HTTP 요청 방식을 문자열로 조합한 값이다.<br>암화 방식은 oauth_signature_method에 정의된다.|
+|oauth_signature_method|oauth_signature를 암호화하는 방법. HMAC-SHA1, HMAC-MD5 등을 사용할 수 있다.|
+|oauth_timestamp|요청을 생성한 시점의 타임스탬프.<br>1970년1월 1일 00시 00분 00초 이후의 시간을 초로 환산한 초 단위의 누적 시간이다.|
+|oauth_version|OAuth 버전|
+|oauth_token|oauth_callback으로 전달받은 oauth_token|
+
+API를 호출할 때는 OAuth 매개변수를 함께 전달해야 한다.      
+HTTP 헤더에 `Authorization` 필드를 두고, `Authorization` 필드의 값 부분에 `OAuth` 매개변수 적는다.       
+`Access Token`을 사용할 때는 `GET`이나 `POST`가 아닌 `**HEAD`** 방식을 사용한다.    
+
+
+
 ###
 ###
