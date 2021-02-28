@@ -172,6 +172,63 @@ Host: nid.naver.com
 |oauth_signature_method|oauth_signature를 암호화하는 방법.<br>HMAC-SHA1, HMAC-MD5 등을 사용할 수 있다.|
 |oauth_timestamp|요청을 생성한 시점의 타임스탬프.<br>1970년1월 1일 00시 00분 00초 이후의 시간을 초로 환산한 초 단위의 누적 시간이다.|
 |oauth_version|OAuth 사용 버전.<br>1.0a는 1.0이라고 명시하면 된다.|
+        
+**oauth_signature 만들기**     
+OAuth 1.0에서는 oauth_signature를 생성하는 것이 가장 까다로운 단계이다.        
+Consumer와 Service Provider가 같은 암호화(signing) 알고리즘을 이용하여 `oauth_signature`를 만들어야 한다.    
+
+oauth_sinature는 다음과 같이 네 단계를 거쳐 만든다.
+      
+1. 요청 매개변수를 모두 모은다.    
+oauth_signature를 제외하고 'oauth_'로 시작하는 OAuth 관련 매개변수를 모은다.      
+POST body에서 매개변수를 사용하고 있다면 이 매개변수도 모아야 한다.   
+       
+2. 매개변수를 정규화(Normalize)한다.      
+모든 매개변수를 사전순으로 정렬하고 각각의 키(key)와 값(value)에 URL 인코딩(rfc3986)을 적용한다.       
+URL 인코딩을 실시한 결과를 = 형태로 나열하고 각 쌍 사이에는 &을 넣는다.      
+이렇게 나온 결과 전체에 또 URL 인코딩을 적용한다.   
+     
+3. Signature Base String을 만든다.     
+HTTP method 명(GET 또는 POST), Consumer가 호출한 HTTP URL 주소(매개변수 제외), 정규화한 매개변수를 '&'를 사용해 결합한다.         
+즉 '[GET|POST] + & + [URL 문자열로 매개변수는 제외] + & + [정규화한 매개변수]' 형태가 된다.          
+이 URL에 URL 인코딩을 적용한 값을 사용했다.    
+          
+4. 키 생성       
+3번 과정까지 거쳐 생성한 문자열을 암호화한다. 암호화할 때 Consumer Secret Key를 사용한다.         
+Consumer Secret Key는 Consumer가 Service Provider에 사용 등록을 할 때 발급받은 값이다.          
+HMAC-SHA1 등의 암호화 방법을 이용하여 최종적인 oauth_signature를 생성한다.       
+        
+사용자 인증 페이지의 호출         
+OAuth에서 사용자 인증 페이지를 호출하는 단계는          
+'안내데스크에서 김목적씨에게 방문한 손님이 있으니 안내 데스크로와서 확인을 요청하는 것'에 비유할 수 있다.               
+Request Token을 요청하면, Service Provider는 Consumer에 Request Token으로 사용할 oauth_token과 oauth_token_secret을 전달한다.         
+Access Token을 요청할 때는 Request Token의 요청에 대한 응답 값으로 받은 oauth_token_secret을 사용한다.         
+Consumer가 웹 애플리케이션이라면 HTTP 세션이나 쿠키 또는 DBMS 등에 oauth_token_secret를 저장해 놓아야 한다.       
+         
+oauth_token을 이용해 Service Provider가 정해 놓은 사용자 인증 페이지를 User에게 보여 주도록 한다.            
+네이버의 경우 OAuth용 사용자 인증 페이지의 주소는 다음과 같다.         
+       
+```http
+https://nid.naver.com/naver.oauth?mode=auth_req_token`     
+```
+여기에 Request Token을 요청해서 반환받은 oauth_token을 매개 변수로 전달하면 된다.       
+예를 들면 다음과 같은 URL이 만들어 지게 되는 것이다.      
+이 URL은 사용자 인증 화면을 가리킨다.        
+   
+```http
+https://nid.naver.com/naver.oauth?mode=auth_req_token&oauth_token=wpsCb0Mcpf9dDDC2
+```
+로그인 화면을 호출하는 단계까지가 '안내 데스크에서 김목적씨에게 전화하는 단계'라 보면 되겠다.       
+이제 김목적씨가 안내 데스크로 와서 나방문씨를 확인해야 한다.       
+정말 나방문씨가 맞는지 아닌지 확인하는 과정이 필요할 것이다.       
+이 과정이 OAuth에서는 Service Provider에서 User를 인증하는 과정이라고 볼 수 있다.     
+    
+인증이 완료되면 앞에서 말한 바와 같이 어떤 권한을 요청하는 단계에 이르게 된다.       
+"업무 약속이 있어 오셨으니 나방문씨가 출입할 수 있게 해 주세요"와 같은 것 말이다.    
+     
+인증을 마치면 Consumer가 oauth_callback에 지정한 URL로 리다이렉트한다.       
+이때 Service Provider는 새로운 oauth_token과 oauth_verifier를 Consumer에 전달한다.       
+이 값들은 Access Token을 요청할 때 사용한다.     
 
 ### Access Token   
       
