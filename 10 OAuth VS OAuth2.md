@@ -223,12 +223,20 @@ Host: http://openapi.naver.com
 |oauth_timestamp|요청을 생성한 시점의 타임스탬프.<br>1970년1월 1일 00시 00분 00초 이후의 시간을 초로 환산한 초 단위의 누적 시간이다.|
 |oauth_version|OAuth 버전|
 |oauth_token|oauth_callback으로 전달받은 oauth_token|
+   
+API를 호출할 때는 OAuth 매개변수를 함께 전달해야 한다.         
+HTTP 헤더에 `Authorization` 필드를 두고, `Authorization` 필드의 값 부분에 `OAuth` 매개변수 적는다.           
+`Access Token`을 사용할 때는 `GET`이나 `POST`가 아닌 **`HEAD`** 방식을 사용한다.      
+    
+**주의**    
+Access Token을 이용해 요청할 때,      
+`Service Provider`에 따라 `realm`이라는 매개변수를 사용해야 하는 경우도 있다.      
+`realm`은 `optional` 매개변수인데, `WWW-Authenticate HTTP` 헤더 필드에서 사용하는 값이다.    
 
-API를 호출할 때는 OAuth 매개변수를 함께 전달해야 한다.      
-HTTP 헤더에 `Authorization` 필드를 두고, `Authorization` 필드의 값 부분에 `OAuth` 매개변수 적는다.       
-`Access Token`을 사용할 때는 `GET`이나 `POST`가 아닌 **`HEAD`** 방식을 사용한다.    
+## OAuth VS OAuth2 
 
-
-
-###
-###
+* 웹 애플리케이션이 아닌 애플리케이션 지원 강화
+* 암호화가 필요 없음 : HTTPS를 사용하고 HMAC을 사용하지 않는다.
+* Siganature 단순화 : 정렬과 URL 인코딩이 필요 없다.
+* Access Token 갱신 : OAuth 1.0에서 Access Token을 받으면 Access Token을 계속 사용할 수 있었다.    
+* OAuth 2.0에서는 보안 강화를 위해 Access Token의 Life-time을 지정할 수 있도록 했다.
