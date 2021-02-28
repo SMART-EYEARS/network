@@ -64,7 +64,7 @@ OAuth는 인증을 위한 오픈 스탠더드 프로토콜로,
 
 ## 리소스 소유자 암호 자격 증명 승인 타입(Resource Owner Password Credentials Grant Type)
 
-![ResourceOwner PasswordCredentialsGrant.png](./images/ResourceOwner PasswordCredentialsGrant.png)
+![ResourceOwner PasswordCredentialsGrant.png](./images/ResourceOwner%20PasswordCredentialsGrant.png)
 
 ## 클라이언트 자격 증명 승인 타입(Client Credentials Grant Type)  
 
