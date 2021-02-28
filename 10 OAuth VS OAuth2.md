@@ -226,7 +226,7 @@ Host: http://openapi.naver.com
 
 API를 호출할 때는 OAuth 매개변수를 함께 전달해야 한다.      
 HTTP 헤더에 `Authorization` 필드를 두고, `Authorization` 필드의 값 부분에 `OAuth` 매개변수 적는다.       
-`Access Token`을 사용할 때는 `GET`이나 `POST`가 아닌 `**HEAD`** 방식을 사용한다.    
+`Access Token`을 사용할 때는 `GET`이나 `POST`가 아닌 **`HEAD`** 방식을 사용한다.    
 
 
 
