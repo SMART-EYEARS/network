@@ -63,3 +63,4 @@ OAuth는 인증을 위한 오픈 스탠더드 프로토콜로,
 
 ## 클라이언트 자격 증명 승인 타입(Client Credentials Grant Type)  
 
+![Client Credentials Grant Type.png](./images/Client Credentials Grant Type.png)
