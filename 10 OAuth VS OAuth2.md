@@ -28,7 +28,7 @@ OAuth는 인증을 위한 오픈 스탠더드 프로토콜로,
 
 ## 권한 부여 코드 승인 타입(Authorization Code Grant Type)  
 
-![AuthorizationCode GrantType.png](./images/AuthorizationCode GrantType.png)     
+![AuthorizationCode GrantType.png](./images/AuthorizationCode%20GrantType.png)     
          
 위 시퀀스 다이어그램에 표시된 각 주체는 아래와 같다.              
                
