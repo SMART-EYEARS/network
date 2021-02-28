@@ -25,7 +25,9 @@ OAuth는 인증을 위한 오픈 스탠더드 프로토콜로,
 눈 여겨볼 방식은 `권한 부여 코드 승인 타입(Authorization Code Grant Type)` 이다.   
 페이스북, 구글, 카카오 등의 소셜 미디어들이 웹 서버 형태의 클라이언트를 지원하는 데 이 방식을 사용한다.      
 이 방식은 **장기 액세스 토큰을 사용하여 사용자 인증을 처리한다.**      
-   
+
+## 권한 부여 코드 승인 타입(Authorization Code Grant Type)  
+
 ![OAuth2.jpeg](./images/OAuth2.jpeg)     
          
 위 시퀀스 다이어그램에 표시된 각 주체는 아래와 같다.              
@@ -54,3 +56,10 @@ OAuth는 인증을 위한 오픈 스탠더드 프로토콜로,
         
 여기서 `권한 부여 코드 승인 타입`의 흐름을 이해하는 것은 굉장히 중요합니다.   
 스프링이 아닌 다른 어떤 라이브러리도 이 흐름을 바탕으로 코드를 구현하기 때문이다.    
+
+## 암시적 승인 타입 (Implicit Grant Type)
+
+## 리소스 소유자 암호 자격 증명 승인 타입(Resource Owner Password Credentials Grant Type)
+
+## 클라이언트 자격 증명 승인 타입(Client Credentials Grant Type)  
+
